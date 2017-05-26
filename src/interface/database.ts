@@ -1,6 +1,7 @@
 type Auth = {login: string, password: string}
 type ID = {id: number}
 type Login = {login: string}
+type Name = {name: string}
 
 
 export type Tables = keyof Database
@@ -11,9 +12,17 @@ export type Shema<T extends Tables> = Database[T]["shema"]
 
 
 export interface Database {
+    "channels": Channels
     "users": Users
 }
 
+
+interface Channels {
+    insert: Name
+    select: ID | Name
+    delete: ID | Name
+    shema: ChannelShema
+}
 
 interface Users {
     insert: Auth
@@ -26,6 +35,11 @@ interface Users {
 interface BaseShema {
     /** Unique ID */
     readonly id: number
+}
+
+interface ChannelShema extends BaseShema {
+    /** Channel's name (unique) */
+    name: string
 }
 
 interface UserShema extends BaseShema {
