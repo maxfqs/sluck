@@ -4,6 +4,7 @@ require("./valid-install");
 const config = require("../config/sluck.json");
 const mysql = require("mysql");
 const shell = require("shelljs");
+const tsc = require("./typescript");
 
 
 const db = mysql.createConnection({
@@ -23,4 +24,9 @@ function onDatabaseCreated(error) {
     }
 
     db.end();
+
+    shell.exec("knex migrate:latest");
+
+    tsc.compile("src/seeds.ts", "lib");
+    shell.exec("node lib/seeds.js");
 }
