@@ -21,7 +21,6 @@ router.use(session({
 router.use(bodyParser.urlencoded({extended: true}));
 
 
-
 router.get("/", async function(req: Req, res) {
     if (req.session.user == null) {
         return res.redirect("/login");
@@ -30,11 +29,16 @@ router.get("/", async function(req: Req, res) {
     res.render("../views/index");
 })
 
-
 router.get("/login", accountGet);
 router.get("/signup", accountGet);
 router.post("/login", accountPost);
 router.post("/signup", accountPost);
+
+router.get("/logout", function(req: Req, res) {
+    req.session.user = null;
+    res.redirect("/login");
+})
+
 
 /** Get method for /login and /signup */
 function accountGet(req: Req, res: express.Response) {
@@ -68,9 +72,3 @@ async function accountPost(req: AccountPostReq, res: express.Response) {
     req.session.user = userID;
     res.redirect("/");
 }
-
-
-router.get("/logout", function(req: Req, res) {
-    req.session.user = null;
-    res.redirect("/login");
-})
