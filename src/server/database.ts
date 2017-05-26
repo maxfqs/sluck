@@ -41,4 +41,19 @@ export default class Database<T extends DB.Tables> {
             return result;
         })
     }
+
+    /**
+    * [ASYNC] Get by ID
+    * Accept a single ID or an array
+    */
+    async getByID(id: number | number[]) {
+        let ids = Array.isArray(id) ? id : [id];
+
+        return this.knex()
+        .whereIn("id", ids)
+        .catch(this.error)
+        .then( function(result: DB.Shema<T>[]) {
+            return result;
+        })
+    }
 }
