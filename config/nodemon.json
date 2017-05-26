@@ -1,0 +1,4 @@
+{
+    "ignore": [".git", "node_modules/*", "public/js/*", "lib/client.js", "lib/client/*", "script/*"],
+    "ext": "js"
+}

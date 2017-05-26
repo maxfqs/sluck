@@ -1,0 +1,41 @@
+{
+  "name": "sluck",
+  "version": "1.0.0",
+  "description": "sluck",
+  "main": "lib/server.js",
+  "scripts": {
+    "deploy": "node script/deploy.js",
+    "build": "node script/build.js",
+    "dev": "node script/watch.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/maxfqs/sluck.git"
+  },
+  "author": "Max Fqs",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/maxfqs/sluck/issues"
+  },
+  "homepage": "https://gitlab.com/maxfqs/sluck#README",
+  "devDependencies": {
+    "filewatcher": "^3.0.1",
+    "nodemon": "^1.11.0"
+  },
+  "dependencies": {
+    "@types/express": "^4.0.35",
+    "@types/jquery": "^2.0.45",
+    "@types/knex": "0.0.52",
+    "@types/node": "^7.0.22",
+    "autoprefixer": "^7.1.1",
+    "ejs": "^2.5.6",
+    "express": "^4.15.3",
+    "knex": "^0.13.0",
+    "mysql": "^2.13.0",
+    "postcss-cli": "^4.0.0",
+    "shelljs": "^0.7.7",
+    "typescript": "^2.3.3",
+    "uglifyjs": "^2.4.11",
+    "webpack": "^2.6.1"
+  }
+}
