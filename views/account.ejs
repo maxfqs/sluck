@@ -9,6 +9,30 @@
 
 <body>
 
+    <div id="account">
+        <h1>Sluck</h1>
+
+        <% if (locals.page == "/login") {%>
+            <form action="/login" method="POST">
+                <input id="login" type="text" name="login" placeholder="Login" value= <%- locals.login %>>
+                <input id="password" type="password" name="password" placeholder="Password" value= <%- locals.password %>>
+                <button id="connect">Login</button>
+            </form>
+
+            <a href="/signup">Create an account</a>
+
+        <%} else {%>
+            <form action="/signup" method="POST">
+                <input id="login" type="text" name="login" placeholder="Login" value= <%- locals.login %>>
+                <input id="password" type="password" name="password" placeholder="Password" value= <%- locals.password %>>
+                <button id="create">Create account</button>
+            </form>
+
+            <a href="/login">Already an account? Sign in</a>
+        <%}%>
+    </div>
+
+
     <!-- JQUERY -->
     <script
         src="https://code.jquery.com/jquery-3.1.1.min.js"
