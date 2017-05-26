@@ -3,6 +3,10 @@ type ID = {id: number}
 type Login = {login: string}
 type Name = {name: string}
 
+type UserID = {user: number}
+type ChannelID = {channel: number}
+type UserChannelsID = {user: number, channel: number}
+
 
 export type Tables = keyof Database
 export type Insert<T extends Tables> = Database[T]["insert"]
@@ -14,6 +18,7 @@ export type Shema<T extends Tables> = Database[T]["shema"]
 export interface Database {
     "channels": Channels
     "users": Users
+    "user-channels": UserChannels
 }
 
 
@@ -22,6 +27,13 @@ interface Channels {
     select: ID | Name
     delete: ID | Name
     shema: ChannelShema
+}
+
+interface UserChannels {
+    insert: UserChannelsID
+    select: UserID | ChannelID | UserChannelsID
+    delete: UserID | ChannelID
+    shema: UserChannelsShema
 }
 
 interface Users {
@@ -47,4 +59,11 @@ interface UserShema extends BaseShema {
     login: string
     /** Password (encrypted) */
     password: string
+}
+
+interface UserChannelsShema extends BaseShema {
+    /** User ID */
+    user: number
+    /** Channel ID */
+    channel: number
 }
