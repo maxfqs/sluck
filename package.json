@@ -27,6 +27,8 @@
     "@types/jquery": "^2.0.45",
     "@types/knex": "0.0.52",
     "@types/node": "^7.0.22",
+    "@types/socket.io": "^1.4.29",
+    "@types/socket.io-client": "^1.4.29",
     "autoprefixer": "^7.1.1",
     "body-parser": "^1.17.2",
     "client-sessions": "^0.8.0",
@@ -36,6 +38,8 @@
     "mysql": "^2.13.0",
     "postcss-cli": "^4.0.0",
     "shelljs": "^0.7.7",
+    "socket.io": "^2.0.1",
+    "socket.io-cookie-parser": "^1.0.0",
     "typescript": "^2.3.3",
     "uglifyjs": "^2.4.11",
     "webpack": "^2.6.1"

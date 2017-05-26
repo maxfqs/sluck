@@ -1,6 +1,7 @@
 import * as express from "express"
 import * as http from "http"
 import router from "./server/router"
+import * as socket from "./server/socket"
 
 
 const app = express();
@@ -12,3 +13,4 @@ app.use(express.static(__dirname + "./../public"));
 app.use(router);
 
 server.listen(8080);
+socket.init(server);
