@@ -32,8 +32,8 @@ export default class Database<T extends DB.Tables> {
         })
     }
 
-    /** [ASYNC] Select */
-    async select(data: DB.Select<T>) {
+    /** [ASYNC] Get */
+    async get(data: DB.Get<T>) {
         return this.knex()
         .where(data)
         .catch(this.error)

@@ -25,7 +25,7 @@ async function isValidName(name: string) {
     }
 
     // Check if already taken
-    let result = await channelDB.select({name: name});
+    let result = await channelDB.get({name: name});
     if (result.length != 0) {
         return false;
     }

@@ -1,6 +1,6 @@
 import * as crypto from "./crypto"
 import Database from "./database"
-import {Insert, Select} from "../interface/database"
+import {Insert, Get} from "../interface/database"
 
 const userDB = new Database("users");
 
@@ -33,12 +33,12 @@ export async function create(login: string, password: string) {
 * Return his id if successful or false
 */
 export async function auth(login: string, password: string) {
-    let data: Select<"users"> = {
+    let data: Get<"users"> = {
         login: login,
         password: crypto.encrypt(password)
     }
 
-    let result = await userDB.select(data);
+    let result = await userDB.get(data);
 
     if (result.length == 0) {
         return false;
@@ -49,7 +49,7 @@ export async function auth(login: string, password: string) {
 
 /** [ASYNC] Check whether the login is available */
 async function isValidLogin(login: string) {
-    let result = await userDB.select({login: login});
+    let result = await userDB.get({login: login});
     if (result.length == 0) {
         return true;
     }
