@@ -7,6 +7,8 @@ type UserID = {user: number}
 type ChannelID = {channel: number}
 type UserChannelsID = {user: number, channel: number}
 
+type InsertMessage = {user: number, channel: number, text: string, date: string}
+
 
 export type Tables = keyof Database
 export type Insert<T extends Tables> = Database[T]["insert"]
@@ -17,6 +19,7 @@ export type Shema<T extends Tables> = Database[T]["shema"]
 
 export interface Database {
     "channels": Channels
+    "messages": Messages
     "users": Users
     "user-channels": UserChannels
 }
@@ -27,6 +30,13 @@ interface Channels {
     get: ID | Name
     delete: ID | Name
     shema: ChannelShema
+}
+
+interface Messages {
+    insert: InsertMessage
+    get: ID | ChannelID
+    delete: ID | UserID | ChannelID
+    shema: MessageShema
 }
 
 interface UserChannels {
@@ -52,6 +62,17 @@ interface BaseShema {
 interface ChannelShema extends BaseShema {
     /** Channel's name (unique) */
     name: string
+}
+
+interface MessageShema extends BaseShema {
+    /** User ID */
+    user: number
+    /** Channel ID */
+    channel: number
+    /** Message's content */
+    text: string
+    /** Date (unix) */
+    date: string
 }
 
 interface UserShema extends BaseShema {
