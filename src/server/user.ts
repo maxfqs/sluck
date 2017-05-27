@@ -48,8 +48,8 @@ export async function auth(login: string, password: string) {
     return result[0].id;
 }
 
-/** [ASYNC] Return the user's channels */
-export async function getChannels(userID: number) {
+/** [ASYNC] Return the user's channels id */
+export async function getChannelsID(userID: number) {
     let result = await userChansDB.get({user: userID});
     if (result.length == 0) {
         return [];
@@ -61,9 +61,9 @@ export async function getChannels(userID: number) {
         chanIDS.push(shema.channel);
     })
 
-    let chans = await channelDB.getByID(chanIDS);
-    return chans;
+    return chanIDS;
 }
+
 
 /** [ASYNC] Check whether the login is available */
 async function isValidLogin(login: string) {

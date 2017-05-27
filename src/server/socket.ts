@@ -1,6 +1,6 @@
+import LiveUser from "../server/live-user"
 import {Server} from "http"
 import * as socketIO from "socket.io"
-import * as user from "../server/user"
 import {Session} from "../interface/router"
 import {Socket} from "../interface/socket"
 
@@ -35,8 +35,12 @@ function authorization(socket: Socket, next) {
 
 /** Init socket */
 function initSocket(socket: Socket) {
+    let User = new LiveUser(socket);
+
     socket.on("init", async function(args, cb) {
-        let channels = await user.getChannels(socket.userID);
+        await User.init();
+
+        let channels = await User.getChannels();
         cb({channels: channels});
     })
 }
