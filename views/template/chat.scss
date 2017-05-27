@@ -16,8 +16,17 @@
 
 
 #chat > #channel-content {
+    display: flex;
+    flex-direction: column;
     flex: auto;
     padding: 10px $chat-left-padding;
+
+    .message-container {
+        flex: auto;
+        height: 0px;
+        overflow-y: auto;
+        color: black;
+    }
 }
 
 #chat > #input {

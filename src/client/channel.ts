@@ -1,6 +1,7 @@
 import $ from "../client/jquery"
 import {ChannelListItem} from "../client/left-panel"
 import * as chat from "../client/chat"
+import MessageContainer from "../client/message-container"
 import {Shema} from "../interface/database"
 
 /** Currently selected channel */
@@ -8,6 +9,7 @@ let selected: Channel = null;
 
 
 export default class Channel {
+    container: MessageContainer
     data: Shema<"channels">
     item: ChannelListItem
 
@@ -15,6 +17,8 @@ export default class Channel {
         let self = this;
 
         this.data = channel;
+
+        this.container = new MessageContainer;
 
         this.item = new ChannelListItem(channel.name);
         this.item.$.on("click", function() {
@@ -34,6 +38,7 @@ export default class Channel {
 
         chat.openChannel(this.data.name);
         this.item.setActive();
+        this.container.open();
 
         selected = this;
     }
@@ -41,5 +46,6 @@ export default class Channel {
     /** Close the channel */
     close() {
         this.item.setInactive();
+        this.container.close();
     }
 }

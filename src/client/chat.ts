@@ -6,6 +6,7 @@ const channelName = chat.find("> #topbar > #channel-name");
 const channelContent = chat.find("> #channel-content");
 const input = chat.find("> #input > textarea");
 
+
 export function openChannel(name: string) {
     channelName.text(name);
 }
@@ -25,8 +26,4 @@ input.keypress( function(data) {
         registerMessage();
         return false;
     }
-})
-
-socket.on("newMessage", function(message) {
-    channelContent.append("<p>" + message.text + "</p>");
 })
