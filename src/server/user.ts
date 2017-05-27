@@ -2,7 +2,9 @@ import * as crypto from "./crypto"
 import Database from "./database"
 import {Insert, Get} from "../interface/database"
 
+const channelDB = new Database("channels");
 const userDB = new Database("users");
+const userChansDB = new Database("user-channels");
 
 
 /**
@@ -46,6 +48,22 @@ export async function auth(login: string, password: string) {
     return result[0].id;
 }
 
+/** [ASYNC] Return the user's channels */
+export async function getChannels(userID: number) {
+    let result = await userChansDB.get({user: userID});
+    if (result.length == 0) {
+        return [];
+    }
+
+    let chanIDS: number[] = [];
+
+    result.forEach( function(shema) {
+        chanIDS.push(shema.channel);
+    })
+
+    let chans = await channelDB.getByID(chanIDS);
+    return chans;
+}
 
 /** [ASYNC] Check whether the login is available */
 async function isValidLogin(login: string) {
