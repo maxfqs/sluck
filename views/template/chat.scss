@@ -1,0 +1,15 @@
+#chat {
+    display: flex;
+    flex-direction: column;
+    flex: auto;
+}
+
+#chat > #topbar {
+    padding: 10px 0px;
+    border-bottom: 1px solid lighten(grey, 35);
+
+    #channel-name {
+        padding-left: $chat-left-padding;
+        font-size: 20px;
+    }
+}
