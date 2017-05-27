@@ -13,3 +13,27 @@
         font-size: 20px;
     }
 }
+
+
+#chat > #channel-content {
+    flex: auto;
+    padding: 10px $chat-left-padding;
+}
+
+#chat > #input {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex: auto;
+    max-height: 100px;
+
+    padding: 0px $chat-left-padding;
+
+    textarea {
+        height: 20px;
+        width: 100%;
+        padding: 10px;
+        border: solid 2px lighten(grey, 35);
+    }
+}

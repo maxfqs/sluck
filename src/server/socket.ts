@@ -1,4 +1,5 @@
 import LiveUser from "../server/live-user"
+import * as message from "../server/message"
 import {Server} from "http"
 import * as socketIO from "socket.io"
 import {Session} from "../interface/router"
@@ -8,10 +9,11 @@ const cookieParser = require("socket.io-cookie-parser")();
 const decode = require("client-sessions").util.decode;
 const secret = require("../../config/sluck.json").sessionSecret;
 
+let io: SocketIO.Server
 
 /** Init socket.io */
 export function init(server: Server) {
-    let io = socketIO(server);
+    io = socketIO(server);
     io.use(cookieParser);
     io.use(authorization);
 
@@ -39,8 +41,15 @@ function initSocket(socket: Socket) {
 
     socket.on("init", async function(args, cb) {
         await User.init();
+        User.initSocket(socket);
 
         let channels = await User.getChannels();
         cb({channels: channels});
+    })
+
+    socket.on("registerMessage", async function(args, cb) {
+        let m = await message.create(socket.userID, args.channel, args.text);
+        io.to("channel" + args.channel).emit("newMessage", m);
+        cb(null);
     })
 }

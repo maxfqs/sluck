@@ -1,8 +1,8 @@
-import * as socketIO from "socket.io-client"
+import {Socket} from "../interface/socket"
 import {Args, Events, RetVal} from "../interface/socket-api"
 
-declare const io: SocketIOClientStatic
-const socket = io.connect("http://localhost:8080");
+declare const io
+export const socket = <Socket>io.connect("http://localhost:8080");
 
 
 /** [ASYNC] Async implementation of the emit method */

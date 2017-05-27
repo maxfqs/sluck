@@ -8,4 +8,6 @@ export interface Socket extends SocketIO.Socket {
     /** User ID */
     userID: number
     on: <T extends Events>(event: T, func: OnCallback<T>) => this
+    emit: <T extends Events>(event: T, args: Args<T>, func?: Function) => boolean
+    to: (name: string) => this
 }

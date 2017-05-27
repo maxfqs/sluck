@@ -7,9 +7,21 @@ export type RetVal<T extends Events> = SocketAPI[T]["retval"]
 
 interface SocketAPI {
     "init": Init
+    "newMessage": NewMessage 
+    "registerMessage": RegisterMessage
 }
 
 interface Init {
     args: null
     retval: {channels: Shema<"channels">[]}
+}
+
+interface RegisterMessage {
+    args: {channel: number, text: string}
+    retval: null
+}
+
+interface NewMessage {
+    args: Shema<"messages">
+    retval: null
 }

@@ -47,6 +47,13 @@ export default class LiveUser {
         this.initDone = true;
     }
 
+    /** Init the socket */
+    initSocket(socket: Socket) {
+        this.channels.forEach( function(chanID) {
+            socket.join("channel" + chanID);
+        })
+    }
+
     setOnline() {
         if (this.online) {
             return false;
