@@ -1,6 +1,6 @@
 import $ from "../client/jquery"
 import {Model} from "../interface/client-model"
-import {socket} from "../client/socket"
+import {socket, emit} from "../client/socket"
 import User from "../client/user"
 
 
@@ -13,10 +13,12 @@ export default class MessageContainer {
     private static containers: { [id: number] : MessageContainer} = {};
     private $: JQuery
     private chanID: number
+    private init: boolean
 
     constructor(chanID: number) {
         this.$ = $messageContainer.clone();
         this.chanID = chanID;
+        this.init = false;
 
         MessageContainer.containers[chanID] = this;
         $channelContent.append(this.$);
@@ -30,6 +32,10 @@ export default class MessageContainer {
     /** Open the container */
     open() {
         this.$.removeClass("hide");
+
+        if (!this.init) {
+            this.loadHistory();
+        }
     }
 
     /** Close the container */
@@ -37,11 +43,29 @@ export default class MessageContainer {
         this.$.addClass("hide");
     }
 
+    /** Prepend message */
+    prependMessage(message: Model<"message">) {
+        let div = createMessage(message);
+        this.$.prepend(div);
+    }
+
     /** Append message */
     appendMessage(message: Model<"message">) {
         let div = createMessage(message);
         this.$.append(div);
         this.$.scrollTop(this.$.prop("scrollHeight"));
+    }
+
+    /** Load the channel history */
+    async loadHistory() {
+        let messages = await emit("getMessagesRecent", this.chanID);
+        let self = this;
+        messages.forEach( function(message) {
+            self.prependMessage(message);
+        })
+
+        this.$.scrollTop(this.$.prop("scrollHeight"));
+        this.init = true;
     }
 }
 

@@ -60,4 +60,9 @@ function initSocket(socket: Socket) {
         io.to("channel" + args.channel).emit("newMessage", m);
         cb(null);
     })
+
+    socket.on("getMessagesRecent", async function(chanID, cb) {
+        let messages = await clientModel.getLastMessages(chanID);
+        cb(messages);
+    })
 }
