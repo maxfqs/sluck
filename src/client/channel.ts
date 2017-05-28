@@ -27,11 +27,11 @@ export default class Channel {
     private data: Shema<"channels">
     private item: ChannelListItem
 
-    constructor(channel: Shema<"channels">) {
-        this.data = channel;
+    constructor(data: Shema<"channels">) {
+        this.data = data;
 
-        this.container = new MessageContainer;
-        this.item = new ChannelListItem(channel.name);
+        this.container = new MessageContainer(data.id);
+        this.item = new ChannelListItem(data.name);
 
         let self = this;
         this.item.$.on("click", function() {
@@ -87,10 +87,5 @@ export default class Channel {
     /** Get channel name */
     getName() {
         return this.data.name;
-    }
-
-    /** Add a message */
-    addMessage(message: Shema<"messages">) {
-        this.container.addMessage(message);
     }
 }

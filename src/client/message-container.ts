@@ -1,28 +1,45 @@
 import $ from "../client/jquery"
 import {Shema} from "../interface/database"
+import {socket} from "../client/socket"
 
 
-const channelContent = $("body").find(">#app >#chat >#channel-content");
-const template = channelContent.find(">#template >.message-container");
+const $channelContent = $("body").find(">#app >#chat >#channel-content");
+const $messageContainer = $channelContent.find(">#template >.message-container");
+
+let containers: { [id: number] : MessageContainer} = {};
 
 
 export default class MessageContainer {
-    $: JQuery
+    private $: JQuery
+    private chanID: number
 
-    constructor() {
-        this.$ = template.clone();
-        channelContent.append(this.$);
+    constructor(chanID: number) {
+        this.$ = $messageContainer.clone();
+        this.chanID = chanID;
+
+        containers[chanID] = this;
+        $channelContent.append(this.$);
     }
 
+    /** Open the container */
     open() {
         this.$.removeClass("hide");
     }
 
+    /** Close the container */
     close() {
         this.$.addClass("hide");
     }
 
-    addMessage(message: Shema<"messages">) {
+    /** Append message */
+    appendMessage(message: Shema<"messages">) {
         this.$.append("<p>" + message.text + "</p>");
+        this.$.scrollTop(this.$.prop("scrollHeight"));
     }
 }
+
+
+socket.on("newMessage", function(message) {
+    let id = message.channel;
+    containers[id].appendMessage(message);
+})
