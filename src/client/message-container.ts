@@ -1,10 +1,12 @@
 import $ from "../client/jquery"
 import {Model} from "../interface/client-model"
 import {socket} from "../client/socket"
+import User from "../client/user"
 
 
 const $channelContent = $("body").find(">#app >#chat >#channel-content");
 const $messageContainer = $channelContent.find(">#template >.message-container");
+const $message = $channelContent.find(">#template >.message");
 
 
 export default class MessageContainer {
@@ -37,9 +39,25 @@ export default class MessageContainer {
 
     /** Append message */
     appendMessage(message: Model<"message">) {
-        this.$.append("<p>" + message.text + "</p>");
+        let div = createMessage(message);
+        this.$.append(div);
         this.$.scrollTop(this.$.prop("scrollHeight"));
     }
+}
+
+
+/** Create a message div */
+function createMessage(data: Model<"message">) {
+    let clone = $message.clone();
+    let formatedMessage = data.text.replace(/\r?\n/g, "<br />");
+    let name = User.get(data.user).getName();
+
+    clone.find(">.user").text(name);
+    clone.find(">.text").html(formatedMessage);
+
+    clone.data("id", data.id);
+
+    return clone;
 }
 
 

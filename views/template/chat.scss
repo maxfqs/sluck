@@ -46,3 +46,13 @@
         border: solid 2px lighten(grey, 35);
     }
 }
+
+
+#chat .message {
+    margin-top: 10px;
+
+    .user {
+        font-weight: bold;
+        font-size: 20px;
+    }
+}
