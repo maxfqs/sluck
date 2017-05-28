@@ -32,7 +32,7 @@ export default class Database<T extends DB.Tables> {
         })
     }
 
-    /** [ASYNC] Get */
+    /** [ASYNC] Get where the data matched */
     async get(data: DB.Get<T>) {
         return this.knex()
         .where(data)
@@ -53,6 +53,19 @@ export default class Database<T extends DB.Tables> {
         .whereIn("id", ids)
         .catch(this.error)
         .then( function(result: DB.Shema<T>[]) {
+            return result;
+        })
+    }
+
+    /**
+    * [ASYNC] Select
+    * Select all if no argument is passed
+    */
+    async select <K extends DB.ShemaKey<T>> (...args: K[]) {
+        return this.knex()
+        .select(args)
+        .catch(this.error)
+        .then( function(result: Pick<DB.Shema<T>, K>[]) {
             return result;
         })
     }

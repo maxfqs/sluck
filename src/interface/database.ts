@@ -15,6 +15,7 @@ export type Insert<T extends Tables> = Database[T]["insert"]
 export type Get<T extends Tables> = Database[T]["get"]
 export type Delete<T extends Tables> = Database[T]["delete"]
 export type Shema<T extends Tables> = Database[T]["shema"]
+export type ShemaKey<T extends Tables> = keyof Database[T]["shema"]
 
 
 export interface Database {
