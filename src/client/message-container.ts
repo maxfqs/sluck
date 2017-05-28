@@ -6,10 +6,9 @@ import {socket} from "../client/socket"
 const $channelContent = $("body").find(">#app >#chat >#channel-content");
 const $messageContainer = $channelContent.find(">#template >.message-container");
 
-let containers: { [id: number] : MessageContainer} = {};
-
 
 export default class MessageContainer {
+    private static containers: { [id: number] : MessageContainer} = {};
     private $: JQuery
     private chanID: number
 
@@ -17,8 +16,13 @@ export default class MessageContainer {
         this.$ = $messageContainer.clone();
         this.chanID = chanID;
 
-        containers[chanID] = this;
+        MessageContainer.containers[chanID] = this;
         $channelContent.append(this.$);
+    }
+
+    /** Static - Return a channel by id */
+    static get(id: number) {
+        return MessageContainer.containers[id];
     }
 
     /** Open the container */
@@ -41,5 +45,5 @@ export default class MessageContainer {
 
 socket.on("newMessage", function(message) {
     let id = message.channel;
-    containers[id].appendMessage(message);
+    MessageContainer.get(id).appendMessage(message);
 })

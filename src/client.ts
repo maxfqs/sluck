@@ -8,6 +8,11 @@ async function init() {
     data.channels.forEach( function(channel) {
         App.addChannel(channel);
     })
+
+    data.users.forEach( function(user) {
+        App.addUser(user);
+    })
 }
+
 
 init();

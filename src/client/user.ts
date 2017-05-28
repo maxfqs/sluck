@@ -15,7 +15,7 @@ interface Events {
 
 
 export default class User {
-    private static users: { [id: number] : User }
+    private static users: { [id: number] : User } = {};
     private data: Model<"user">
 
     constructor(data: Model<"user">) {
