@@ -13,7 +13,10 @@ interface SocketAPI {
 
 interface Init {
     args: null
-    retval: { channels: Model<"channel">[] }
+    retval: {
+        channels: Model<"channel">[]
+        users: Model<"user">[]
+    }
 }
 
 interface RegisterMessage {

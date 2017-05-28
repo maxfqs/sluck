@@ -7,4 +7,13 @@ export type Model<T extends keyof ClientModel> = ClientModel[T]
 interface ClientModel {
     "channel": Shema<"channels">
     "message": Shema<"messages">
+    "user": User
+}
+
+
+interface User {
+    /** User ID */
+    id: number
+    /** Username (unique) */
+    login: string
 }

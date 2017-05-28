@@ -1,3 +1,4 @@
+import * as clientModel from "../server/client-model"
 import LiveUser from "../server/live-user"
 import * as message from "../server/message"
 import {Server} from "http"
@@ -43,8 +44,15 @@ function initSocket(socket: Socket) {
         await User.init();
         User.initSocket(socket);
 
-        let channels = await User.getChannels();
-        cb({channels: channels});
+        let data = await Promise.all([
+            User.getChannels(),
+            clientModel.getAllUsers()
+        ])
+
+        cb({
+            channels: data[0],
+            users: data[1]
+        })
     })
 
     socket.on("registerMessage", async function(args, cb) {
