@@ -1,6 +1,5 @@
 import $ from "../client/jquery"
 import {ChannelListItem} from "../client/left-panel"
-import * as chat from "../client/chat"
 import EventEmitter from "./event-emitter"
 import MessageContainer from "../client/message-container"
 import {Shema} from "../interface/database"
@@ -66,7 +65,6 @@ export default class Channel {
             Channel.selected.close();
         }
 
-        chat.openChannel(this.data.name);
         this.item.setActive();
         this.container.open();
 
@@ -84,5 +82,15 @@ export default class Channel {
     /** Get channel ID */
     getID() {
         return this.data.id;
+    }
+
+    /** Get channel name */
+    getName() {
+        return this.data.name;
+    }
+
+    /** Add a message */
+    addMessage(message: Shema<"messages">) {
+        this.container.addMessage(message);
     }
 }

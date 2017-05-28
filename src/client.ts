@@ -1,3 +1,5 @@
+import "./client/chat-input"
+import "./client/chat-topbar"
 import Channel from "./client/channel"
 import {socket, emit} from "./client/socket"
 
@@ -18,5 +20,5 @@ init();
 
 socket.on("newMessage", function(message) {
     let chanID = message.channel;
-    channels[chanID].container.addMessage(message);
+    channels[chanID].addMessage(message);
 })
