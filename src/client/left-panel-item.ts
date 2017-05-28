@@ -34,14 +34,18 @@ export class ChannelItem extends LeftPanelItem {
 /** Append to the list by alphabetical order */
 function alphaSortedAppend(item: JQuery, list: JQuery) {
     let name = item.text().trim().toLowerCase();
-    let target: JQuery;
+    let target: JQuery = null;
 
     let childs = list.children(".channel-list-item");
 
     childs.each( function() {
         let element = $(this);
         let elementName = element.text().trim().toLowerCase();
-        target = (name < elementName) ? element : null;
+
+        if (name < elementName) {
+            target = element;
+            return false;
+        }
     })
 
     if (target == null) {
