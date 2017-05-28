@@ -1,4 +1,4 @@
-import {Shema} from "../interface/database"
+import {Model} from "../interface/client-model"
 
 export type Events = keyof SocketAPI
 export type Args<T extends Events> = SocketAPI[T]["args"]
@@ -7,13 +7,13 @@ export type RetVal<T extends Events> = SocketAPI[T]["retval"]
 
 interface SocketAPI {
     "init": Init
-    "newMessage": NewMessage 
+    "newMessage": NewMessage
     "registerMessage": RegisterMessage
 }
 
 interface Init {
     args: null
-    retval: {channels: Shema<"channels">[]}
+    retval: { channels: Model<"channel">[] }
 }
 
 interface RegisterMessage {
@@ -22,6 +22,6 @@ interface RegisterMessage {
 }
 
 interface NewMessage {
-    args: Shema<"messages">
+    args: Model<"message">
     retval: null
 }

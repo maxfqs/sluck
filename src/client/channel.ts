@@ -2,7 +2,7 @@ import $ from "../client/jquery"
 import {ChannelListItem} from "../client/left-panel"
 import EventEmitter from "./event-emitter"
 import MessageContainer from "../client/message-container"
-import {Shema} from "../interface/database"
+import {Model} from "../interface/client-model"
 
 
 const events = new EventEmitter();
@@ -24,10 +24,10 @@ export default class Channel {
     private static selected: Channel = null;
 
     private container: MessageContainer
-    private data: Shema<"channels">
+    private data: Model<"channel">
     private item: ChannelListItem
 
-    constructor(data: Shema<"channels">) {
+    constructor(data: Model<"channel">) {
         this.data = data;
 
         this.container = new MessageContainer(data.id);

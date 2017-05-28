@@ -1,5 +1,5 @@
 import $ from "../client/jquery"
-import {Shema} from "../interface/database"
+import {Model} from "../interface/client-model"
 import {socket} from "../client/socket"
 
 
@@ -32,7 +32,7 @@ export default class MessageContainer {
     }
 
     /** Append message */
-    appendMessage(message: Shema<"messages">) {
+    appendMessage(message: Model<"message">) {
         this.$.append("<p>" + message.text + "</p>");
         this.$.scrollTop(this.$.prop("scrollHeight"));
     }

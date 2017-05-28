@@ -2,7 +2,7 @@ import "../client/chat-input"
 import "../client/chat-topbar"
 import Channel from "../client/channel"
 import EventEmitter from "../client/event-emitter"
-import {Shema} from "../interface/database"
+import {Model} from "../interface/client-model"
 
 
 /**
@@ -25,7 +25,7 @@ class App {
     }
 
     /** Add a channel */
-    addChannel(data: Shema<"channels">) {
+    addChannel(data: Model<"channel">) {
         let id = data.id;
         this.channels[id] = new Channel(data);
 
