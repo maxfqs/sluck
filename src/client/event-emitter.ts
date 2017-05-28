@@ -23,6 +23,10 @@ export default class EventEmitter {
 
     /** Trigger the callbacks attached to that event */
     emit(e: string, args: any) {
+        if (this.events[e] == null) {
+            this.events[e] = [];
+        }
+
         this.events[e].forEach( function(cb) {
             cb(args);
         })
