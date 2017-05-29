@@ -61,6 +61,11 @@ function initSocket(socket: Socket) {
         cb(null);
     })
 
+    socket.on("getFirstMessageID", async function(chanID, cb) {
+        let id = await clientModel.getFirstMessageID(chanID);
+        cb(id);
+    })
+
     socket.on("getMessagesRecent", async function(chanID, cb) {
         let messages = await clientModel.getLastMessages(chanID);
         cb(messages);

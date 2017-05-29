@@ -7,6 +7,7 @@ export type RetVal<T extends Events> = SocketAPI[T]["retval"]
 
 interface SocketAPI {
     "init": Init
+    "getFirstMessageID": GetFirstMessageID
     "getMessagesBefore": GetMessagesBefore
     "getMessagesRecent": GetMessagesRecent
     "newMessage": NewMessage
@@ -19,6 +20,11 @@ interface Init {
         channels: Model<"channel">[]
         users: Model<"user">[]
     }
+}
+
+interface GetFirstMessageID {
+    args: number
+    retval: number
 }
 
 interface GetMessagesBefore {

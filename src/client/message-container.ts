@@ -78,6 +78,7 @@ export default class MessageContainer {
     private chanID: number
     private dcm: DayContainerManager
     private init: boolean
+    private firstMesssageID: number
     private firstID: number
     private lastID: number
 
@@ -136,9 +137,15 @@ export default class MessageContainer {
 
     /** Load the channel history */
     async loadHistory() {
-        let messages = await emit("getMessagesRecent", this.chanID);
+        let data = await Promise.all([
+            emit("getFirstMessageID", this.chanID),
+            emit("getMessagesRecent", this.chanID)
+        ])
+
+        this.firstMesssageID = data[0];
+
         let self = this;
-        messages.forEach( function(message) {
+        data[1].forEach( function(message) {
             self.addMessage(message, "prepend");
         })
 
@@ -148,6 +155,10 @@ export default class MessageContainer {
 
     /** Get messages before the first message ID */
     async getMessagesBefore() {
+        if (this.firstID == this.firstMesssageID) {
+            return false;
+        }
+
         let self = this;
         let messages = await emit("getMessagesBefore", {channel: this.chanID, message: this.firstID});
 
