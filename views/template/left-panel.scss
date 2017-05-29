@@ -14,7 +14,7 @@
 .channel-list-item {
     padding: 5px 20px;
 
-    font-size: 17px;
+    font-size: 1em;
     color: white;
     opacity: 0.6;
 
@@ -27,6 +27,7 @@
 
 #channel-list > #header {
     text-transform: uppercase;
+    font-weight: 700;
 }
 
 .channel-list-item {

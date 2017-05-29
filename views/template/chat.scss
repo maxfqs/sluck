@@ -10,7 +10,8 @@
 
     #channel-name {
         padding-left: $chat-left-padding;
-        font-size: 20px;
+        font-size: 1.25em;
+        font-weight: 700;
     }
 }
 
@@ -81,13 +82,15 @@
     }
 
     .user {
-        font-weight: bold;
-        font-size: 16px;
+        font-weight: 700;
+        font-size: 1em;
     }
 
     .date {
         margin-left: 10px;
-        font-size: 13px;
+        font-size: 0.7em;
+        font-weight: 700;
+
         opacity: 0.5;
     }
 }
