@@ -78,6 +78,8 @@ export default class MessageContainer {
     private chanID: number
     private dcm: DayContainerManager
     private init: boolean
+    private firstID: number
+    private lastID: number
 
     constructor(chanID: number) {
         this.$ = $messageContainer.clone();
@@ -87,6 +89,11 @@ export default class MessageContainer {
 
         MessageContainer.containers[chanID] = this;
         $channelContent.append(this.$);
+
+        let self = this;
+        this.$.scroll(function() {
+            self.onScroll();
+        })
     }
 
     /** Static - Return a channel by id */
@@ -118,9 +125,11 @@ export default class MessageContainer {
             case "append":
                 dayMessages.append(messageDiv);
                 this.$.scrollTop(this.$.prop("scrollHeight"));
+                this.lastID = message.id;
                 break;
             case "prepend":
                 dayMessages.prepend(messageDiv);
+                this.firstID = message.id;
                 break;
         }
     }
@@ -135,6 +144,35 @@ export default class MessageContainer {
 
         this.$.scrollTop(this.$.prop("scrollHeight"));
         this.init = true;
+    }
+
+    /** Get messages before the first message ID */
+    async getMessagesBefore() {
+        let self = this;
+        let messages = await emit("getMessagesBefore", {channel: this.chanID, message: this.firstID});
+
+        messages.forEach( function(message) {
+            self.addMessage(message, "prepend");
+        })
+
+        // Scroll to the most recent message added
+        let $div = this.findMessage(messages[0].id);
+        this.$.scrollTop($div.offset().top - $div.outerHeight(true));
+    }
+
+    /** Return a message inside the container by ID */
+    findMessage(id: number) {
+        let message = this.$.find(".message").filter( function() {
+            return $(this).data("id") == id;
+        })
+        return message;
+    }
+
+    /** On scroll event handler */
+    onScroll() {
+        if (this.$.scrollTop() == 0) {
+            this.getMessagesBefore();
+        }
     }
 }
 

@@ -65,4 +65,9 @@ function initSocket(socket: Socket) {
         let messages = await clientModel.getLastMessages(chanID);
         cb(messages);
     })
+
+    socket.on("getMessagesBefore", async function(args, cb) {
+        let messages = await clientModel.getMessagesBefore(args.channel, args.message);
+        cb(messages);
+    })
 }

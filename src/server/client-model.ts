@@ -18,11 +18,25 @@ export async function getAllUsers(): Promise< Model<"user">[] > {
 /** [ASYNC] Return the most recent messages of that channel */
 export async function getLastMessages(chanID: number): Promise< Model<"message">[] >  {
     let where: Partial<Shema<"messages">> = {channel: chanID};
-    let order: ShemaKey<"messages"> = "id";
 
     return messageDB.knex()
     .where(where)
-    .orderBy(order, "desc")
+    .orderBy("id", "desc")
+    .limit(NUMBER_OF_MESSAGES)
+    .catch(messageDB.error)
+    .then( function(result: Shema<"messages">[]) {
+        return result;
+    })
+}
+
+/** [ASYNC] Return the messages before the specified id */
+export async function getMessagesBefore(chanID: number, messageID: number): Promise< Model<"message">[] > {
+    let where: Partial<Shema<"messages">> = {channel: chanID};
+
+    return messageDB.knex()
+    .where(where)
+    .andWhere("id", "<", messageID)
+    .orderBy("id", "desc")
     .limit(NUMBER_OF_MESSAGES)
     .catch(messageDB.error)
     .then( function(result: Shema<"messages">[]) {
