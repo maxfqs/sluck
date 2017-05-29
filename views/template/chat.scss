@@ -19,14 +19,6 @@
     display: flex;
     flex-direction: column;
     flex: auto;
-    padding: 10px $chat-left-padding;
-
-    .message-container {
-        flex: auto;
-        height: 0px;
-        overflow-y: auto;
-        color: black;
-    }
 }
 
 #chat > #input {
@@ -48,8 +40,39 @@
 }
 
 
+#chat .message-container {
+    flex: auto;
+    height: 0px;
+    overflow-y: auto;
+    color: black;
+}
+
+#chat .day-container {
+    .messages {
+        padding: 10px 0px 20px 0px;
+    }
+}
+
+#chat .day {
+    position: sticky;
+    top: 0px;
+    z-index: 1000;
+    padding: 2px 0px;
+
+    text-align: center;
+    text-transform: capitalize;
+    font-size: .9rem;
+    font-weight: bold;
+
+    border-top: solid 1px lighten(grey, 45);
+    border-bottom: solid 1px lighten(grey, 45);
+    background-color: lighten(grey, 48);
+}
+
+
 #chat .message {
     margin-top: 10px;
+    padding: 0px $chat-left-padding;
 
     .header {
         display: flex;

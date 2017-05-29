@@ -5,20 +5,84 @@ import {socket, emit} from "../client/socket"
 import User from "../client/user"
 
 
+const DAY_FORMAT = "MM DD, YYYY";
+const HOUR_FORMAT = "h:mm A";
+const MONTHS = {
+    "01": "january", "02": "february", "03": "march",
+    "04": "april", "05": "may", "06": "june",
+    "07": "july", "08": "august", "09": "september",
+    "10": "october", "11": "november", "12": "december"
+}
+
 const $channelContent = $("body").find(">#app >#chat >#channel-content");
 const $messageContainer = $channelContent.find(">#template >.message-container");
 const $message = $channelContent.find(">#template >.message");
+const $dayContainer = $channelContent.find(">#template >.day-container");
+
+
+class DayContainerManager {
+    private days: { [date: string]: JQuery }
+    private messageContainer: JQuery
+
+    constructor(mc: JQuery) {
+        this.days = {};
+        this.messageContainer = mc;
+    }
+
+    /** Create a day container */
+    create(date: string) {
+        let container = $dayContainer.clone();
+        let day = container.find(">.day");
+
+        // Add the date text
+        let month = MONTHS[date.substring(0,2)];
+        let formatedDate = month + " " + date.substring(3);
+        day.html(formatedDate);
+
+        // The container need to be added in chronological order.
+        // To do so we loop through the stored containers to find the one
+        // just after our new date so we can use it to prepend.
+        // We need to check each one as JS does not guarantee property order on Object.
+        let targetDate = null;
+        Object.keys(this.days).forEach( function(dayDate) {
+            if (date < dayDate) {
+                if (targetDate == null) {
+                    targetDate = dayDate;
+                } else if (dayDate < targetDate) {
+                    targetDate = dayDate;
+                }
+            }
+        })
+
+        let target = this.days[targetDate] || null;
+        if (target != null) {
+            target.before(container);
+        } else {
+            this.messageContainer.append(container);
+        }
+
+        this.days[date] = container;
+        return container;
+    }
+
+    /** Return a day container by date */
+    get(date: string) {
+        return this.days[date] || this.create(date);
+    }
+}
 
 
 export default class MessageContainer {
     private static containers: { [id: number] : MessageContainer} = {};
     private $: JQuery
     private chanID: number
+    private dcm: DayContainerManager
     private init: boolean
 
     constructor(chanID: number) {
         this.$ = $messageContainer.clone();
         this.chanID = chanID;
+        this.dcm = new DayContainerManager(this.$);
         this.init = false;
 
         MessageContainer.containers[chanID] = this;
@@ -44,17 +108,21 @@ export default class MessageContainer {
         this.$.addClass("hide");
     }
 
-    /** Prepend message */
-    prependMessage(message: Model<"message">) {
-        let div = createMessage(message);
-        this.$.prepend(div);
-    }
+    /** Add a message to the approriate day container */
+    addMessage(message: Model<"message">, mode: "append" | "prepend") {
+        let dayDate = moment(message.date, "X", true).format(DAY_FORMAT);
+        let dayMessages = this.dcm.get(dayDate).find(">.messages");
+        let messageDiv = createMessage(message);
 
-    /** Append message */
-    appendMessage(message: Model<"message">) {
-        let div = createMessage(message);
-        this.$.append(div);
-        this.$.scrollTop(this.$.prop("scrollHeight"));
+        switch (mode) {
+            case "append":
+                dayMessages.append(messageDiv);
+                this.$.scrollTop(this.$.prop("scrollHeight"));
+                break;
+            case "prepend":
+                dayMessages.prepend(messageDiv);
+                break;
+        }
     }
 
     /** Load the channel history */
@@ -62,7 +130,7 @@ export default class MessageContainer {
         let messages = await emit("getMessagesRecent", this.chanID);
         let self = this;
         messages.forEach( function(message) {
-            self.prependMessage(message);
+            self.addMessage(message, "prepend");
         })
 
         this.$.scrollTop(this.$.prop("scrollHeight"));
@@ -76,7 +144,7 @@ function createMessage(data: Model<"message">) {
     let clone = $message.clone();
     let formatedMessage = data.text.replace(/\r?\n/g, "<br />");
     let name = User.get(data.user).getName();
-    let date = moment(data.date, "X", true).format("h:mm A");
+    let date = moment(data.date, "X", true).format(HOUR_FORMAT);
 
     clone.find(">.header >.user").text(name);
     clone.find(">.header >.date").text(date);
@@ -90,5 +158,5 @@ function createMessage(data: Model<"message">) {
 
 socket.on("newMessage", function(message) {
     let id = message.channel;
-    MessageContainer.get(id).appendMessage(message);
+    MessageContainer.get(id).addMessage(message, "append");
 })
