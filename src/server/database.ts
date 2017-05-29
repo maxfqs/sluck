@@ -2,7 +2,7 @@ import * as knex from "knex"
 import * as DB from "../interface/database"
 
 const options = require("../../knexfile").development;
-const queryBuilder = knex(options);
+const queryBuilder: any = knex(options);
 
 
 export default class Database<T extends DB.Tables> {
@@ -14,7 +14,7 @@ export default class Database<T extends DB.Tables> {
 
     /** Return a query builder for the table */
     knex() {
-        return queryBuilder(this.table);
+        return <DB.QueryBuilder<T>>queryBuilder(this.table);
     }
 
     /** Log the sql error */
@@ -33,7 +33,7 @@ export default class Database<T extends DB.Tables> {
     }
 
     /** [ASYNC] Get where the data matched */
-    async get(data: DB.Get<T>) {
+    async get(data: Partial<DB.Shema<T>>) {
         return this.knex()
         .where(data)
         .catch(this.error)
@@ -63,7 +63,7 @@ export default class Database<T extends DB.Tables> {
     */
     async select <K extends DB.ShemaKey<T>> (...args: K[]) {
         return this.knex()
-        .select(args)
+        .select(...args)
         .catch(this.error)
         .then( function(result: Pick<DB.Shema<T>, K>[]) {
             return result;

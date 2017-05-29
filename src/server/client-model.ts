@@ -17,11 +17,9 @@ export async function getAllUsers(): Promise< Model<"user">[] > {
 
 /** [ASYNC] Return the first message ID for that channel */
 export async function getFirstMessageID(chanID: number) {
-    let where: Partial<Shema<"messages">> = {channel: chanID};
-
     return messageDB.knex()
     .select("id")
-    .where(where)
+    .where({channel: chanID})
     .limit(1)
     .catch(messageDB.error)
     .then( function(result: Pick<Shema<"messages">, "id">[]) {
@@ -31,10 +29,8 @@ export async function getFirstMessageID(chanID: number) {
 
 /** [ASYNC] Return the most recent messages of that channel */
 export async function getLastMessages(chanID: number): Promise< Model<"message">[] >  {
-    let where: Partial<Shema<"messages">> = {channel: chanID};
-
     return messageDB.knex()
-    .where(where)
+    .where({channel: chanID})
     .orderBy("id", "desc")
     .limit(NUMBER_OF_MESSAGES)
     .catch(messageDB.error)
@@ -45,10 +41,8 @@ export async function getLastMessages(chanID: number): Promise< Model<"message">
 
 /** [ASYNC] Return the messages before the specified id */
 export async function getMessagesBefore(chanID: number, messageID: number): Promise< Model<"message">[] > {
-    let where: Partial<Shema<"messages">> = {channel: chanID};
-
     return messageDB.knex()
-    .where(where)
+    .where({channel: chanID})
     .andWhere("id", "<", messageID)
     .orderBy("id", "desc")
     .limit(NUMBER_OF_MESSAGES)

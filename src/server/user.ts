@@ -1,6 +1,5 @@
 import * as crypto from "./crypto"
 import Database from "./database"
-import {Insert, Get} from "../interface/database"
 
 const channelDB = new Database("channels");
 const userDB = new Database("users");
@@ -21,12 +20,11 @@ export async function create(login: string, password: string) {
         return false;
     }
 
-    let data: Insert<"users"> = {
+    let result = await userDB.insert({
         login: login,
         password: crypto.encrypt(password)
-    }
+    })
 
-    let result = await userDB.insert(data);
     return result[0];
 }
 
@@ -35,12 +33,10 @@ export async function create(login: string, password: string) {
 * Return his id if successful or false
 */
 export async function auth(login: string, password: string) {
-    let data: Get<"users"> = {
+    let result = await userDB.get({
         login: login,
         password: crypto.encrypt(password)
-    }
-
-    let result = await userDB.get(data);
+    })
 
     if (result.length == 0) {
         return false;
