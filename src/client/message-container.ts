@@ -1,5 +1,6 @@
 import $ from "../client/jquery"
 import {Model} from "../interface/client-model"
+import moment from "../client/moment"
 import {socket, emit} from "../client/socket"
 import User from "../client/user"
 
@@ -75,8 +76,10 @@ function createMessage(data: Model<"message">) {
     let clone = $message.clone();
     let formatedMessage = data.text.replace(/\r?\n/g, "<br />");
     let name = User.get(data.user).getName();
+    let date = moment(data.date, "X", true).format("h:mm A");
 
-    clone.find(">.user").text(name);
+    clone.find(">.header >.user").text(name);
+    clone.find(">.header >.date").text(date);
     clone.find(">.text").html(formatedMessage);
 
     clone.data("id", data.id);
