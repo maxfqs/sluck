@@ -1,5 +1,6 @@
 import * as crypto from "./crypto"
 import Database from "./database"
+import {Insert} from "../interface/database"
 
 const channelDB = new Database("channels");
 const userDB = new Database("users");
@@ -25,7 +26,10 @@ export async function create(login: string, password: string) {
         password: crypto.encrypt(password)
     })
 
-    return result[0];
+    let id = result[0];
+
+    await addToAutoJoinChannel(id);
+    return id;    
 }
 
 /**
@@ -68,4 +72,16 @@ async function isValidLogin(login: string) {
         return true;
     }
     return false;
+}
+
+/** [ASYNC] Add the user to all auto join channels */
+async function addToAutoJoinChannel(userID: number) {
+    let chans = await channelDB.get({auto_join: true});
+    let insertData: Insert<"user-channels">[] = [];
+
+    chans.forEach( function(chan) {
+        insertData.push({channel: chan.id, user: userID});
+    })
+
+    await userChansDB.insert(insertData);
 }
