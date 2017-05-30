@@ -1,5 +1,6 @@
 import "../client/chat-input"
 import "../client/chat-topbar"
+import "../client/modal-create-channel"
 import Channel from "../client/channel"
 import EventEmitter from "../client/event-emitter"
 import {Model} from "../interface/client-model"
