@@ -23,7 +23,7 @@ export default class Database<T extends DB.Tables> {
     }
 
     /** [ASYNC] Insert and return the inserted row's ID */
-    async insert(data: DB.Insert<T>) {
+    async insert(data: DB.Insert<T> | DB.Insert<T>[]) {
         return this.knex()
         .insert(data)
         .catch(this.error)

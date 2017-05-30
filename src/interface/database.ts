@@ -45,7 +45,7 @@ export interface Database {
 
 
 interface Channels {
-    insert: Name
+    insert: {name: string, auto_join?: boolean}
     delete: ID | Name
     shema: ChannelShema
 }
@@ -77,6 +77,8 @@ interface BaseShema {
 interface ChannelShema extends BaseShema {
     /** Channel's name (unique) */
     name: string
+    /** Should user join automatically this channel */
+    auto_join: boolean
 }
 
 interface MessageShema extends BaseShema {
