@@ -4,26 +4,20 @@ import {Socket} from "../interface/socket"
 
 const channelDB = new Database("channels");
 
-let cached: {[id: number] : LiveUser} = {};
-
 
 export default class LiveUser {
+    private static users: {[id: number] : LiveUser} = {};
     private channels: number[]
     private id: number
     private initDone: boolean
     private online: boolean
     private sockets: Socket[]
 
-    constructor(socket: Socket) {
-        let id = socket.userID;
-
+    constructor(id: number) {
         // User already created
-        // register the socket and return
-        // the cached user
-        if (cached[id] != null) {
-            let user = cached[id];
-            user.addSocket(socket);
-            return user;
+        // return the cached user
+        if (LiveUser.users[id] != null) {
+            return LiveUser.users[id];
         }
 
         this.channels = [];
@@ -32,8 +26,7 @@ export default class LiveUser {
         this.online = false;
         this.sockets = [];
 
-        cached[id] = this;
-
+        LiveUser.users[id] = this;
         this.setOnline();
     }
 
@@ -47,12 +40,15 @@ export default class LiveUser {
         this.initDone = true;
     }
 
-    /** Init the socket */
-    initSocket(socket: Socket) {
+    /** Register a socket */
+    registerSocket(socket: Socket) {
         this.channels.forEach( function(chanID) {
             socket.join("channel" + chanID);
         })
+
+        this.sockets.push(socket);
     }
+
 
     setOnline() {
         if (this.online) {
@@ -60,10 +56,6 @@ export default class LiveUser {
         }
 
         this.online = true;
-    }
-
-    addSocket(socket: Socket) {
-        this.sockets.push(socket);
     }
 
     async getChannels() {

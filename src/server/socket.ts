@@ -38,11 +38,11 @@ function authorization(socket: Socket, next) {
 
 /** Init socket */
 function initSocket(socket: Socket) {
-    let User = new LiveUser(socket);
+    let User = new LiveUser(socket.userID);
 
     socket.on("init", async function(args, cb) {
         await User.init();
-        User.initSocket(socket);
+        User.registerSocket(socket);
 
         let data = await Promise.all([
             User.getChannels(),
