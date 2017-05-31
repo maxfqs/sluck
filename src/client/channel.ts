@@ -2,6 +2,7 @@ import {ChannelItem} from "../client/left-panel-item"
 import EventEmitter from "./event-emitter"
 import MessageContainer from "../client/message-container"
 import {Model} from "../interface/client-model"
+import {socket} from "../client/socket"
 
 const events = new EventEmitter();
 
@@ -93,3 +94,8 @@ export default class Channel {
         return this.data.name;
     }
 }
+
+
+socket.on("newChannel", function(chan) {
+    new Channel(chan);
+})
