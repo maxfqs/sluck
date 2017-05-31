@@ -23,7 +23,7 @@ export async function getFirstMessageID(chanID: number) {
     .limit(1)
     .catch(messageDB.error)
     .then( function(result: Pick<Shema<"messages">, "id">[]) {
-        return result[0].id;
+        return (result.length > 0) ? result[0].id : 0;
     })
 }
 

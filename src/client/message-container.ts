@@ -131,6 +131,11 @@ export default class MessageContainer {
             case "prepend":
                 dayMessages.prepend(messageDiv);
                 this.firstID = message.id;
+
+                // In case the channel doesn't have any message yet
+                if (this.firstMesssageID == 0) {
+                    this.firstMesssageID = message.id
+                }
                 break;
         }
     }
