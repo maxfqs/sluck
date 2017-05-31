@@ -1,5 +1,26 @@
 #channel-name {
-    padding-left: $chat-left-padding;
+    flex: auto;
     font-size: 1.25em;
     font-weight: 700;
+}
+
+.icon {
+    height: 2.5em;
+    width: 2.5em;
+    box-sizing: border-box;
+
+    border: solid 1px white;
+    opacity: 0.4;
+    cursor: pointer;
+
+    &:hover {
+        opacity: 1;
+    }
+
+    &.selected {
+        opacity: 1;
+        background-color: lighten(grey, 45);
+        border: solid 1px lighten(grey, 35);
+        border-radius: 5px;
+    }
 }
