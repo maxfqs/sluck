@@ -20,18 +20,8 @@ interface Where <T extends Tables, K extends ShemaKey<T>> {
 }
 
 
-type Auth = {login: string, password: string}
-type ID = {id: number}
-type Login = {login: string}
-type Name = {name: string}
-type UserID = {user: number}
-type ChannelID = {channel: number}
-type UserChannelsID = {user: number, channel: number}
-type InsertMessage = {user: number, channel: number, text: string, date: string}
-
 export type Tables = keyof Database
 export type Insert<T extends Tables> = Database[T]["insert"]
-export type Delete<T extends Tables> = Database[T]["delete"]
 export type Shema<T extends Tables> = Database[T]["shema"]
 export type ShemaKey<T extends Tables> = keyof Database[T]["shema"]
 
@@ -46,25 +36,21 @@ export interface Database {
 
 interface Channels {
     insert: {name: string, auto_join?: boolean}
-    delete: ID | Name
     shema: ChannelShema
 }
 
 interface Messages {
-    insert: InsertMessage
-    delete: ID | UserID | ChannelID
+    insert: {user: number, channel: number, text: string, date: string}
     shema: MessageShema
 }
 
 interface UserChannels {
-    insert: UserChannelsID
-    delete: UserID | ChannelID
+    insert: {user: number, channel: number}
     shema: UserChannelsShema
 }
 
 interface Users {
-    insert: Auth
-    delete: ID | Auth
+    insert: {login: string, password: string}
     shema: UserShema
 }
 
