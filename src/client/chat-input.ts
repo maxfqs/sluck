@@ -2,8 +2,8 @@ import $ from "../client/jquery"
 import Channel from "../client/channel"
 import {emit} from "../client/socket"
 
-const $input = $("body").find(">#app >#chat >#input");
-const $textArea = $input.find(">textarea");
+const $input = $("#app").find("#chat-input");
+const $textArea = $input.find("textarea");
 
 
 // Reset the chat input on page load

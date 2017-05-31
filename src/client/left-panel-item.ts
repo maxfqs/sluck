@@ -1,15 +1,17 @@
 import $ from "../client/jquery"
 
-const $channel = $("body").find(">#app >#left-panel >#channel-list");
-const $channelList = $channel.find(">#list");
-const $channelItem = $channel.find("> #template >.channel-list-item");
+const $channel = $("#app").find("#channel-list");
+const $list = $channel.find("#channel-lb");
+const $item = $channel.find("#template >.item");
 
 
 class LeftPanelItem {
     $: JQuery
+    name: JQuery
 
     constructor(item: JQuery) {
         this.$ = item;
+        this.name = item.find(".name");
     }
 
     setActive() {
@@ -24,9 +26,13 @@ class LeftPanelItem {
 
 export class ChannelItem extends LeftPanelItem {
     constructor(name: string) {
-        super($channelItem.clone());
-        this.$.html(name);
-        alphaSortedAppend(this.$, $channelList);
+        super($item.clone());
+        this.setName(name);
+        alphaSortedAppend(this.$, $list);
+    }
+
+    setName(name: string) {
+        this.name.text(name);
     }
 }
 

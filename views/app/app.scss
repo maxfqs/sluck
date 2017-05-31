@@ -1,0 +1,49 @@
+#app {
+
+    #left-panel {
+        min-width: $left-panel-width;
+        max-width: $left-panel-width;
+
+        background-color: $blue-dark;
+        border-right: solid 1px darken($blue-dark, 10);
+    }
+
+    #channel-list {
+        flex: auto;
+        height: 0px;
+        overflow-y: auto;
+
+        @import "channel-list";
+    }
+
+    #chat-topbar {
+        padding: 10px 0px;
+        border-bottom: 1px solid lighten(grey, 35);
+
+        @import "chat-topbar";
+    }
+
+    #chat {
+        @import "chat";
+    }
+
+    #chat-input {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        flex: auto;
+        max-height: 100px;
+
+        padding: 0px $chat-left-padding;
+
+        @import "chat-input";
+    }
+
+    #user-list {
+        flex: auto;
+        min-width: $left-panel-width;
+        max-width: $left-panel-width;
+        background-color: lighten($blue-dark, 35);
+    }
+}

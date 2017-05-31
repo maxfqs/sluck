@@ -1,13 +1,17 @@
-@import "common/variables";
+// LAYOUT
+$min-width: 768px;
+$left-panel-width: 220px;
+$chat-left-padding: 20px;
 
-@import "class/hide";
+// COLORS
+$blue-dark: #303E4D;
 
-@import "template/left-panel";
-@import "template/chat";
 
+@import "common/hide";
+@import "common/wrapper";
+
+@import "app/app";
 @import "modal/modal";
-
-@import "page/index";
 
 
 html { height: 100% }

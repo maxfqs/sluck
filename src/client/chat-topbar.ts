@@ -1,8 +1,8 @@
 import $ from "../client/jquery"
 import Channel from "../client/channel"
 
-const $topbar = $("body").find(">#app >#chat >#topbar");
-const $channelName = $topbar.find(">#channel-name");
+const $topbar = $("#app").find("#chat-topbar");
+const $channelName = $topbar.find("#channel-name");
 
 
 // Update the channel name

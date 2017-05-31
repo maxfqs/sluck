@@ -14,10 +14,10 @@ const MONTHS = {
     "10": "october", "11": "november", "12": "december"
 }
 
-const $channelContent = $("body").find(">#app >#chat >#channel-content");
-const $messageContainer = $channelContent.find(">#template >.message-container");
-const $message = $channelContent.find(">#template >.message");
-const $dayContainer = $channelContent.find(">#template >.day-container");
+const $chat = $("#app").find("#chat");
+const $messageContainer = $chat.find("#template .message-container");
+const $dayContainer = $chat.find("#template .day-container");
+const $message = $chat.find("#template .message");
 
 
 class DayContainerManager {
@@ -89,7 +89,7 @@ export default class MessageContainer {
         this.init = false;
 
         MessageContainer.containers[chanID] = this;
-        $channelContent.append(this.$);
+        $chat.append(this.$);
 
         let self = this;
         this.$.scroll(function() {

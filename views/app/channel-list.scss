@@ -1,0 +1,39 @@
+.header, .item {
+    padding: 0.25em 20px;
+    color: white;
+    opacity: 0.6;
+    cursor: pointer;
+}
+
+.header {
+    margin-top: 15px;
+    margin-bottom: 5px;
+    font-size: 0.8em;
+    text-transform: uppercase;
+    font-weight: 900;
+
+    &:hover {
+        opacity: 1;
+    }
+}
+
+.item {
+    display: flex;
+    align-items: center;
+    position: relative;
+    font-size: 1em;
+
+    &:hover {
+        background-color: lighten($blue-dark, 10);
+    }
+
+    &.selected {
+        background-color: lighten($blue-dark, 30);
+        opacity: 1;
+    }
+
+    .name {
+        position: relative;
+        top: -1px;
+    }
+}

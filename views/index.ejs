@@ -4,20 +4,14 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Sluck</title>
-    <link href="https://fonts.googleapis.com/css?family=Lato:400,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700,900" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-    <div id="app">
-        <%- include("./template/left-panel.ejs"); %>
-        <%- include("./template/chat.ejs"); %>
-    </div>
-
-    <div id="modal">
-        <%- include("./modal/create-channel.ejs"); %>
-    </div>
+    <%- include("./app/app.ejs"); %>
+    <%- include("./modal/modal.ejs"); %>
 
     <!-- JQUERY -->
     <script

@@ -4,7 +4,7 @@ import {emit} from "../client/socket"
 import Modal from "../client/modal"
 
 
-const $channelHeader = $("body").find(">#app >#left-panel >#channel-list >#header");
+const $channelHeader = $("#app").find("#channel-list #channel-header");
 
 const modal = new Modal("create-channel", true);
 const $name = modal.$.find(">#name");

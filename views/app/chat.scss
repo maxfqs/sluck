@@ -1,0 +1,51 @@
+.message-container {
+    flex: auto;
+    height: 0px;
+    overflow-y: auto;
+    color: black;
+}
+
+
+.day {
+    position: sticky;
+    top: 0px;
+    z-index: 1000;
+    padding: 2px 0px;
+
+    text-align: center;
+    text-transform: capitalize;
+    font-size: .9rem;
+    font-weight: bold;
+
+    border-top: solid 1px lighten(grey, 45);
+    border-bottom: solid 1px lighten(grey, 45);
+    background-color: lighten(grey, 48);
+}
+
+.messages {
+    padding: 10px 0px 20px 0px;
+}
+
+.message {
+    margin-top: 10px;
+    padding: 0px $chat-left-padding;
+
+    .header {
+        display: flex;
+        align-items: baseline;
+        justify-content: flex-start;
+    }
+
+    .user {
+        font-weight: 700;
+        font-size: 1em;
+    }
+
+    .date {
+        margin-left: 10px;
+        font-size: 0.7em;
+        font-weight: 700;
+
+        opacity: 0.5;
+    }
+}

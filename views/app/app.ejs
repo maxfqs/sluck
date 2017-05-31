@@ -1,0 +1,15 @@
+<div id="app" class="wrapper">
+    <div id="left-panel" class="wrapper column">
+        <%- include("./channel-list.ejs"); %>
+    </div>
+    <div class="wrapper column">
+        <%- include("./chat-topbar.ejs"); %>
+        <div class="wrapper">
+            <div class="wrapper column">
+                <%- include("./chat.ejs"); %>
+                <%- include("./chat-input.ejs"); %>
+            </div>
+            <%- include("./user-list.ejs"); %>
+        </div>
+    </div>
+</div>
