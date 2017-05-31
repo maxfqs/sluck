@@ -50,5 +50,7 @@
         box-sizing: border-box;
         background-color: lighten($blue-dark, 35);
         border-left: solid 2px lighten($blue-dark, 25);
+
+        @import "user-list";
     }
 }

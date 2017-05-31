@@ -1,5 +1,6 @@
 import EventEmitter from "./event-emitter"
 import {Model} from "../interface/client-model"
+import UserListItem from "../client/user-list-item"
 
 const events = new EventEmitter();
 
@@ -17,9 +18,12 @@ interface Events {
 export default class User {
     private static users: { [id: number] : User } = {};
     private data: Model<"user">
+    private item: UserListItem
 
     constructor(data: Model<"user">) {
         this.data = data;
+        this.item = new UserListItem(data.login);
+        
         User.users[data.id] = this;
         User.emit("create", this);
     }
