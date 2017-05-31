@@ -4,6 +4,7 @@ import "../client/modal-create-channel"
 import Channel from "../client/channel"
 import EventEmitter from "../client/event-emitter"
 import {Model} from "../interface/client-model"
+import {socket} from "../client/socket"
 import User from "../client/user"
 
 
@@ -23,4 +24,10 @@ class App {
 
 
 // Singleton
-export default new App();
+const app = new App();
+export default app;
+
+
+socket.on("newChannel", function(chan) {
+    app.addChannel(chan);
+})

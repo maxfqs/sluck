@@ -32,6 +32,22 @@ export async function create(name: string, autoJoin?: boolean) {
     return id;
 }
 
+/** [ASYNC] Get the users id of that channel */
+export async function getUsersID(chanID: number) {
+    let retval: number[] = [];
+    let users = await userChanDB.get({channel: chanID});
+
+    if (users.length == 0) {
+        return retval;
+    }
+
+    users.forEach( function(shema) {
+        retval.push(shema.user);
+    })
+
+    return retval;
+}
+
 
 /** [ASYNC] Check whether the name is valid */
 async function isValidName(name: string) {

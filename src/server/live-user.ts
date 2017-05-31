@@ -1,8 +1,10 @@
+import * as channel from "../server/channel"
 import Database from "../server/database"
 import * as user from "../server/user"
 import {Socket} from "../interface/socket"
 
 const channelDB = new Database("channels");
+const userChanDB = new Database("user-channels");
 
 
 export default class LiveUser {
@@ -30,6 +32,24 @@ export default class LiveUser {
         this.setOnline();
     }
 
+    /** Static - Apply the callback to all users */
+    static toAll(cb: (user: LiveUser) => void) {
+        Object.keys(LiveUser.users).forEach( function(key) {
+            let user = LiveUser.users[Number(key)];
+            cb(user);
+        })
+    }
+
+    /** Make all the users concerned join that channel */
+    static async addChannel(chanID: number) {
+        let members = await channel.getUsersID(chanID);
+        LiveUser.toAll( function(user) {
+            if (members.indexOf(user.id) > -1) {
+                user.joinChannel(chanID);
+            }
+        })
+    }
+
     /** [ASYNC] Initialize the user */
     async init() {
         if (this.initDone) {
@@ -49,6 +69,17 @@ export default class LiveUser {
         this.sockets.push(socket);
     }
 
+    /** Add the user to that channel */
+    joinChannel(chanID: number) {
+        if (this.channels.indexOf(chanID) > -1) {
+            return false;
+        }
+
+        this.channels.push(chanID);
+        this.sockets.forEach( function(socket) {
+            socket.join("channel" + chanID);
+        })
+    }
 
     setOnline() {
         if (this.online) {

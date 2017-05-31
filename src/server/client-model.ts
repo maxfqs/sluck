@@ -5,6 +5,7 @@ import {Shema, ShemaKey} from "../interface/database"
 
 const NUMBER_OF_MESSAGES = 30;
 
+const chanDB = new Database("channels");
 const messageDB = new Database("messages");
 const userDB = new Database("users");
 
@@ -14,6 +15,12 @@ export async function getAllUsers(): Promise< Model<"user">[] > {
     let result = await userDB.select("id", "login");
     return result;
 }
+
+export async function getChannelByID(chanID: number): Promise<Model<"channel">> {
+    let chan = await chanDB.getByID(chanID);
+    return chan[0];
+}
+
 
 /** [ASYNC] Return the first message ID for that channel */
 export async function getFirstMessageID(chanID: number) {
