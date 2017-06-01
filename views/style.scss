@@ -5,7 +5,7 @@ $chat-padding: 20px;
 
 // COLORS
 $black: #2C2D30;
-$blue: #007AB8;
+$blue: #457FCA;
 $blue-dark: #303E4D;
 $green: #2AB27B;
 $grey: lighten(grey, 45);
@@ -20,6 +20,7 @@ $grey: lighten(grey, 45);
 @import "app/app";
 @import "modal/modal";
 
+@import "account";
 
 html { height: 100% }
 

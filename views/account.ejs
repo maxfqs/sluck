@@ -4,32 +4,29 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Sluck</title>
-    <link href="https://fonts.googleapis.com/css?family=Lato:400,700" rel="stylesheet"> 
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-    <div id="account">
-        <h1>Sluck</h1>
+    <div id="account" class="wrapper column center">
+        <div class="title">sluck</div>
 
         <% if (locals.page == "/login") {%>
             <form action="/login" method="POST">
-                <input id="login" type="text" name="login" placeholder="Login" value= <%- locals.login %>>
-                <input id="password" type="password" name="password" placeholder="Password" value= <%- locals.password %>>
-                <button id="connect">Login</button>
+                <input id="login" class="input" type="text" name="login" placeholder="Login" value= <%- locals.login %>>
+                <input id="password" class="input" type="password" name="password" placeholder="Password" value= <%- locals.password %>>
+                <button id="connect" class="button valid">Login</button>
+                <a href="/signup">No account? Create one.</a>
             </form>
-
-            <a href="/signup">Create an account</a>
-
         <%} else {%>
             <form action="/signup" method="POST">
-                <input id="login" type="text" name="login" placeholder="Login" value= <%- locals.login %>>
-                <input id="password" type="password" name="password" placeholder="Password" value= <%- locals.password %>>
-                <button id="create">Create account</button>
+                <input id="login" class="input" type="text" name="login" placeholder="Login" value= <%- locals.login %>>
+                <input id="password" class="input" type="password" name="password" placeholder="Password" value= <%- locals.password %>>
+                <button id="create" class="button valid">Create account</button>
+                <a href="/login">Already an account? Sign in.</a>
             </form>
-
-            <a href="/login">Already an account? Sign in</a>
         <%}%>
     </div>
 
