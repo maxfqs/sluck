@@ -1,10 +1,23 @@
+.header, .user {
+    padding: 2px $chat-padding;
+    color: white;
+}
+
+
+.header {
+    margin-top: 10px;
+    font-size: 0.8em;
+    text-transform: uppercase;
+    font-weight: 900;
+    opacity: 0.6;
+}
+
+
 .user {
     display: flex;
     align-items: center;
-    padding: 2px $chat-padding;
     margin-top: 5px;
 
-    color: white;
     font-size: 1.4em;
     cursor: pointer;
 
@@ -24,12 +37,12 @@
         background-color: lighten($blue-dark, 25);
         opacity: 1 !important;
     }
+}
 
-    &.offline {
-        opacity: 0.6;
-    }
+#online-lb .user {
+    opacity: 1;
+}
 
-    &.online {
-        opacity: 1;
-    }
+#offline-lb .user {
+    opacity: 0.6;
 }

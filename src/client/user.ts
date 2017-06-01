@@ -1,7 +1,7 @@
 import EventEmitter from "./event-emitter"
 import {Model} from "../interface/client-model"
 import {socket} from "../client/socket"
-import UserListItem from "../client/user-list-item"
+import {UserListItem} from "../client/user-list"
 
 const events = new EventEmitter();
 
@@ -59,9 +59,18 @@ export default class User {
         this.item.setOnline();
         this.online = true;
     }
+
+    setOffline() {
+        this.item.setOffline();
+        this.online = false;
+    }
 }
 
 
 socket.on("userConnected", function(id) {
     User.get(id).setOnline();
+})
+
+socket.on("userDisconnected", function(id) {
+    User.get(id).setOffline();
 })
