@@ -98,4 +98,9 @@ function initSocket(socket: Socket) {
         let messages = await clientModel.getMessagesBefore(args.channel, args.message);
         cb(messages);
     })
+
+    socket.on("getUser", async function(userID, cb) {
+        let user = await clientModel.getUserByID(userID);
+        cb(user);
+    })
 }

@@ -17,6 +17,7 @@ interface SocketAPI {
     "registerMessage": RegisterMessage
     "userConnected": UserConnected
     "userDisconnected": UserDisconnected
+    "getUser": GetUser
 }
 
 interface Init {
@@ -69,3 +70,8 @@ interface UserConnected {
 }
 
 interface UserDisconnected extends UserConnected {}
+
+interface GetUser {
+    args: number
+    retval: Model<"user">
+}

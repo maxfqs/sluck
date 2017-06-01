@@ -1,6 +1,6 @@
 import EventEmitter from "./event-emitter"
 import {Model} from "../interface/client-model"
-import {socket} from "../client/socket"
+import {emit, socket} from "../client/socket"
 import {UserListItem} from "../client/user-list"
 
 const events = new EventEmitter();
@@ -67,8 +67,16 @@ export default class User {
 }
 
 
-socket.on("userConnected", function(id) {
-    User.get(id).setOnline();
+socket.on("userConnected", async function(id) {
+    let user = User.get(id);
+
+    if (user != null) {
+        return user.setOnline();
+    }
+
+    // User unknown, create it and set him online
+    let data = await emit("getUser", id);
+    new User(data).setOnline();
 })
 
 socket.on("userDisconnected", function(id) {

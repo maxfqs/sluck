@@ -21,6 +21,15 @@ export async function getChannelByID(chanID: number): Promise<Model<"channel">> 
     return chan[0];
 }
 
+export async function getUserByID(userID: number): Promise<Model<"user">> {
+    let result = await userDB.getByID(userID);
+    let user = {
+        id: result[0].id,
+        login: result[0].login
+    }
+    return user;
+}
+
 
 /** [ASYNC] Return the first message ID for that channel */
 export async function getFirstMessageID(chanID: number) {
