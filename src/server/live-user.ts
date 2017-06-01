@@ -56,6 +56,15 @@ export default class LiveUser {
         })
     }
 
+    /** Return the ids of all online users */
+    static getOnlineUsersID() {
+        let ids: number[] = [];
+        LiveUser.toAll( function(user) {
+            ids.push(user.id);
+        })
+        return ids;
+    }
+
     /** [ASYNC] Initialize the user */
     async init() {
         if (this.initDone) {

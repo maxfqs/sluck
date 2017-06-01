@@ -23,6 +23,7 @@ interface Init {
     args: null
     retval: {
         channels: Model<"channel">[]
+        online: number[]
         users: Model<"user">[]
     }
 }

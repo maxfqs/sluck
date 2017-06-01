@@ -48,12 +48,14 @@ function initSocket(socket: Socket) {
 
         let data = await Promise.all([
             User.getChannels(),
+            LiveUser.getOnlineUsersID(),
             clientModel.getAllUsers()
         ])
 
         cb({
             channels: data[0],
-            users: data[1]
+            online: data[1],
+            users: data[2]
         })
     })
 

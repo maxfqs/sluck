@@ -12,4 +12,8 @@ export default class UserListItem {
         this.$.find(".name").text(name);
         $list.append(this.$);
     }
+
+    setOnline() {
+        this.$.addClass("online");
+    }
 }

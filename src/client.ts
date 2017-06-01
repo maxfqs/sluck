@@ -16,6 +16,10 @@ async function init() {
     data.users.forEach( function(user) {
         new User(user);
     })
+
+    data.online.forEach( function(id) {
+        User.get(id).setOnline();
+    })
 }
 
 
