@@ -1,13 +1,14 @@
 import * as channel from "../server/channel"
 import Database from "../server/database"
 import * as user from "../server/user"
-import {Socket} from "../interface/socket"
+import {IO, Socket} from "../interface/socket"
 
 const channelDB = new Database("channels");
 const userChanDB = new Database("user-channels");
 
 
 export default class LiveUser {
+    private static io: IO = null;
     private static users: {[id: number] : LiveUser} = {};
     private channels: number[]
     private id: number
@@ -30,6 +31,11 @@ export default class LiveUser {
 
         LiveUser.users[id] = this;
         this.setOnline();
+    }
+
+    /** Static - Register the server io object */
+    static registerIO(io: IO) {
+        LiveUser.io = io;
     }
 
     /** Static - Apply the callback to all users */
@@ -66,7 +72,14 @@ export default class LiveUser {
             socket.join("channel" + chanID);
         })
 
+        socket.join("all");
         this.sockets.push(socket);
+    }
+
+    /** Remove a socket */
+    removeSocket(socket: Socket) {
+        let index = this.sockets.indexOf(socket);
+        this.sockets.splice(index, 1);
     }
 
     /** Add the user to that channel */
@@ -81,12 +94,32 @@ export default class LiveUser {
         })
     }
 
+    /** Set user online */
     setOnline() {
         if (this.online) {
             return false;
         }
 
         this.online = true;
+        LiveUser.io.to("all").emit("userConnected", this.id);
+    }
+
+    /** Set user offline */
+    setOffline(socket: Socket) {
+        if (!this.online) {
+            return false;
+        }
+
+        // User has more then one socket opened
+        // do not set him offline
+        if(this.sockets.length > 1){
+            this.removeSocket(socket);
+            return false;
+        }
+
+        // Broadcast the change and remove from the cached users
+        LiveUser.io.to("all").emit("userDisconnected", this.id);
+        delete LiveUser.users[this.id];
     }
 
     async getChannels() {

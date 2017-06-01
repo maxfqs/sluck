@@ -5,20 +5,21 @@ import * as message from "../server/message"
 import {Server} from "http"
 import * as socketIO from "socket.io"
 import {Session} from "../interface/router"
-import {Socket} from "../interface/socket"
+import {IO, Socket} from "../interface/socket"
 
 const cookieParser = require("socket.io-cookie-parser")();
 const decode = require("client-sessions").util.decode;
 const secret = require("../../config/sluck.json").sessionSecret;
 
-let io: SocketIO.Server
+let io: IO
 
 /** Init socket.io */
 export function init(server: Server) {
-    io = socketIO(server);
+    io = <any>socketIO(server);
     io.use(cookieParser);
     io.use(authorization);
 
+    LiveUser.registerIO(io);
     io.sockets.on("connection", initSocket);
 }
 
@@ -56,6 +57,9 @@ function initSocket(socket: Socket) {
         })
     })
 
+    socket.on("disconnect", function() {
+        User.setOffline(socket);
+    })
 
     socket.on("createChannel", async function(args, cb) {
         let chanID = await channel.create(args.name, args.auto_join);
