@@ -4,11 +4,18 @@ $left-panel-width: 220px;
 $chat-padding: 20px;
 
 // COLORS
+$black: #2C2D30;
+$blue: #007AB8;
 $blue-dark: #303E4D;
+$green: #2AB27B;
+$grey: lighten(grey, 45);
 
 
 @import "common/hide";
 @import "common/wrapper";
+@import "common/button";
+@import "common/input";
+@import "common/checkbox";
 
 @import "app/app";
 @import "modal/modal";
@@ -26,4 +33,5 @@ body {
 
     font-family: Lato;
     font-weight: 400;
+    color: $black;
 }

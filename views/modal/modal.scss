@@ -1,4 +1,11 @@
-#modal.full-page {
-    display: flex;
-    flex: auto;
+#modal {
+
+    &.full-page {
+        display: flex;
+        flex: auto;
+    }
+
+    #create-channel {
+        @import "create-channel";
+    }
 }

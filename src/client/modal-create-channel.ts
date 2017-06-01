@@ -7,10 +7,10 @@ import Modal from "../client/modal"
 const $channelHeader = $("#app").find("#channel-list #channel-header");
 
 const modal = new Modal("create-channel", true);
-const $name = modal.$.find(">#name");
-const $autoJoin = modal.$.find(">label >#auto-join");
-const $create = modal.$.find(">#create");
-const $close = modal.$.find(">#close");
+const $name = modal.$.find("#name");
+const $autoJoin = modal.$.find("#auto-join");
+const $create = modal.$.find("#create");
+const $close = modal.$.find("#close");
 
 let createdID: number = null;
 
@@ -20,6 +20,7 @@ function openModal() {
     // Reset Val
     $name.val("");
     $autoJoin.prop("checked", false);
+    $create.addClass("disable");
 
     modal.open();
 }
