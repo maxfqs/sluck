@@ -40,6 +40,14 @@ router.get("/logout", function(req: Req, res) {
 })
 
 
+router.all("/private/*", function(req: Req, res, next) {
+    if (req.session.user == null) {
+        return res.send("");
+    }
+    next();
+})
+
+
 /** Get method for /login and /signup */
 function accountGet(req: Req, res: express.Response) {
     let locals = {page: req.url, login: "", password: "", error: false};
