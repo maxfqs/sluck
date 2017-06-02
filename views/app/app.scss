@@ -16,6 +16,17 @@
         @import "channel-list";
     }
 
+    #user-setting {
+        display: flex;
+        align-items: center;
+        padding: 1em;
+
+        background-color: darken($blue-dark, 5);
+        border-top: solid 1px darken($blue-dark, 10);
+
+        @import "user-setting";
+    }
+
     #chat-topbar {
         display: flex;
         align-items: center;
