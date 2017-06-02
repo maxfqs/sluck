@@ -9,3 +9,8 @@ public/sluck.js
 public/style.css
 
 script/sass
+
+private/*
+!private/avatar
+private/avatar/*
+!private/avatar/default.png
