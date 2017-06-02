@@ -16,4 +16,6 @@ interface User {
     id: number
     /** Username (unique) */
     login: string
+    /** Avatar filename */
+    avatar: string
 }

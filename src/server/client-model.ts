@@ -12,7 +12,7 @@ const userDB = new Database("users");
 
 /** [ASYNC] Return all the users */
 export async function getAllUsers(): Promise< Model<"user">[] > {
-    let result = await userDB.select("id", "login");
+    let result = await userDB.select("id", "login", "avatar");
     return result;
 }
 
@@ -25,7 +25,8 @@ export async function getUserByID(userID: number): Promise<Model<"user">> {
     let result = await userDB.getByID(userID);
     let user = {
         id: result[0].id,
-        login: result[0].login
+        login: result[0].login,
+        avatar: result[0].avatar
     }
     return user;
 }

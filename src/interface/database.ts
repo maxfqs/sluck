@@ -83,6 +83,8 @@ interface UserShema extends BaseShema {
     login: string
     /** Password (encrypted) */
     password: string
+    /** Avatar filename */
+    avatar: string
 }
 
 interface UserChannelsShema extends BaseShema {
