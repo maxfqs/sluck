@@ -28,7 +28,7 @@
     }
 
     &.selected {
-        background-color: lighten($blue-dark, 30);
+        background-color: $blue;
         opacity: 1;
     }
 
