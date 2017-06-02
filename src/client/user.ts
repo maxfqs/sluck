@@ -24,7 +24,7 @@ export default class User {
 
     constructor(data: Model<"user">) {
         this.data = data;
-        this.item = new UserListItem(data.login);
+        this.item = new UserListItem(data.login, data.avatar);
         this.online = false;
 
         User.users[data.id] = this;
@@ -44,6 +44,10 @@ export default class User {
     /** Static - Return a user by id */
     static get(userID: number) {
         return User.users[userID];
+    }
+
+    getAvatar() {
+        return this.data.avatar;
     }
 
     getID() {

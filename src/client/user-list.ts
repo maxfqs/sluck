@@ -10,13 +10,17 @@ const $item = $list.find("#template > .user");
 
 export class UserListItem {
     private $: JQuery
+    private $avatar: JQuery
     private $name: JQuery
 
-    constructor(name: string) {
+    constructor(name: string, avatar: string) {
         this.$ = $item.clone();
+        this.$avatar = this.$.find(".avatar");
         this.$name = this.$.find(".name");
 
+        this.$avatar.attr("src", "private/avatar/" + avatar);
         this.$name.text(name);
+        
         appendAlphaSorted(this.$, "offline");
     }
 
