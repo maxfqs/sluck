@@ -26,8 +26,16 @@
 }
 
 .message {
+    display: flex;
     margin-top: 10px;
     padding: 0px $chat-padding;
+
+    .avatar {
+        height: 2.5em;
+        width: 2.5em;
+        margin-right: 0.5em;
+        border-radius: 100%;
+    }
 
     .header {
         display: flex;

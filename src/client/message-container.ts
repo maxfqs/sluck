@@ -196,15 +196,18 @@ export default class MessageContainer {
 /** Create a message div */
 function createMessage(data: Model<"message">) {
     let clone = $message.clone();
+    let user = User.get(data.user);
+
     let formatedMessage = data.text.replace(/\r?\n/g, "<br />");
-    let name = User.get(data.user).getName();
     let date = moment(data.date, "X", true).format(HOUR_FORMAT);
 
-    clone.find(">.header >.user").text(name);
-    clone.find(">.header >.date").text(date);
-    clone.find(">.text").html(formatedMessage);
+    clone.find(".avatar").attr("src", user.getAvatar());
+    clone.find(".user").text(user.getName());
+    clone.find(".date").text(date);
+    clone.find(".text").html(formatedMessage);
 
     clone.data("id", data.id);
+    clone.data("user", data.user);
 
     return clone;
 }
