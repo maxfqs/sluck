@@ -24,7 +24,7 @@ export default class User {
 
     constructor(data: Model<"user">) {
         this.data = data;
-        this.item = new UserListItem(data.login, data.avatar);
+        this.item = new UserListItem(data.login, this.getAvatar());
         this.online = false;
 
         User.users[data.id] = this;
@@ -47,7 +47,7 @@ export default class User {
     }
 
     getAvatar() {
-        return this.data.avatar;
+        return "private/avatar/" + this.data.avatar;
     }
 
     getID() {

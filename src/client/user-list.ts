@@ -18,9 +18,9 @@ export class UserListItem {
         this.$avatar = this.$.find(".avatar");
         this.$name = this.$.find(".name");
 
-        this.$avatar.attr("src", "private/avatar/" + avatar);
+        this.$avatar.attr("src", avatar);
         this.$name.text(name);
-        
+
         appendAlphaSorted(this.$, "offline");
     }
 
