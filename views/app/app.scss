@@ -42,12 +42,7 @@
 
     #chat-input {
         display: flex;
-        align-items: center;
-        justify-content: center;
-
-        flex: auto;
-        max-height: 100px;
-
+        flex-direction: column;
         padding: 0px $chat-padding;
 
         @import "chat-input";

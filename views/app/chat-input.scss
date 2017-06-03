@@ -1,6 +1,19 @@
 textarea {
-    height: 20px;
-    width: 100%;
-    padding: 10px;
+    flex: auto;
+    height: 1.3em;
+    padding: 0.5em;
+
     border: solid 2px lighten(grey, 35);
+    resize: none;
+
+    font-family: Lato;
+    font-size: 1em;
+    color: $black;
+}
+
+.notification {
+    height: 1.4em;
+    padding: 0.5em 0;
+    font-size: 0.7em;
+    opacity: 0.8;
 }
