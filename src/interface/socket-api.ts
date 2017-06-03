@@ -24,6 +24,7 @@ interface Init {
     args: null
     retval: {
         channels: Model<"channel">[]
+        currentUser: number
         online: number[]
         users: Model<"user">[]
     }

@@ -9,6 +9,8 @@ import User from "./client/user"
 async function init() {
     let data = await emit("init", null);
 
+    User.setCurrentUser(data.currentUser);
+
     data.channels.forEach( function(chan) {
         new Channel(chan);
     })

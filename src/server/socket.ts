@@ -54,6 +54,7 @@ function initSocket(socket: Socket) {
 
         cb({
             channels: data[0],
+            currentUser: socket.userID,
             online: data[1],
             users: data[2]
         })

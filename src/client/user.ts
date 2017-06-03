@@ -17,6 +17,7 @@ interface Events {
 
 
 export default class User {
+    private static currentUser: number = null;
     private static users: { [id: number] : User } = {};
     private data: Model<"user">
     private item: UserListItem
@@ -39,6 +40,22 @@ export default class User {
     /** Static - Trigger the event */
     static emit <E extends keyof Events> (e: E, args: Events[E]) {
         events.emit(e, args);
+    }
+
+    /**
+    * Static - Set the current user ID
+    * Can only be set once
+    */
+    static setCurrentUser(id: number) {
+        User.currentUser = User.currentUser || id;
+    }
+
+    static isCurrentUser(id: number) {
+        return User.currentUser == id;
+    }
+
+    static getCurrentUser() {
+        return User.users[User.currentUser];
     }
 
     /** Static - Return a user by id */
