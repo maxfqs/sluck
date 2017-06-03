@@ -34,7 +34,7 @@
     }
 
     &:hover {
-        background-color: lighten($blue-dark, 25);
+        background-color: lighten($blue-dark, 10);
         opacity: 1 !important;
     }
 }
