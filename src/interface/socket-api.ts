@@ -17,6 +17,7 @@ interface SocketAPI {
     "registerMessage": RegisterMessage
     "userConnected": UserConnected
     "userDisconnected": UserDisconnected
+    "userTyping": UserTyping
     "getUser": GetUser
 }
 
@@ -75,4 +76,9 @@ interface UserDisconnected extends UserConnected {}
 interface GetUser {
     args: number
     retval: Model<"user">
+}
+
+interface UserTyping {
+    args: {user: number, channel: number, typing: boolean}
+    retval: null
 }

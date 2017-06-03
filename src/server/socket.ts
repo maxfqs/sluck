@@ -104,4 +104,8 @@ function initSocket(socket: Socket) {
         let user = await clientModel.getUserByID(userID);
         cb(user);
     })
+
+    socket.on("userTyping", function(args) {
+        io.to("channel" + args.channel).emit("userTyping", args);
+    })
 }
