@@ -117,6 +117,25 @@ Channel.on("close", function(chan) {
 })
 
 
+User.on("disconnect", function(user) {
+    let userID = user.getID();
+
+    // Remove that user from all typings since he disconnects
+    Object.keys(typings).forEach( function(chanID) {
+        let users = typings[chanID];
+        let index = users.indexOf(userID);
+        if (index > -1) {
+            users.splice(index, 1);
+            typings[chanID] = users;
+        }
+    })
+
+    // Update the notification bar
+    let chanID = Channel.getSelected().getID();
+    $notification.text(getTypingsText(chanID));
+})
+
+
 socket.on("userTyping", function(args) {
     if (User.isCurrentUser(args.user)) {
         return false;
