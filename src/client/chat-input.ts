@@ -3,34 +3,20 @@ import Channel from "../client/channel"
 import {socket, emit} from "../client/socket"
 import User from "../client/user"
 
-
 const $input = $("#app").find("#chat-input");
 const $textArea = $input.find("textarea");
 const $notification = $input.find(".notification");
 
-
-$textArea.val(""); // Reset the chat input on page load
-$textArea.keyup(onKeyUp);
-
-
 // Keep in memory the textArea value between channels
 // so we can restore it on chanel opening
-let cachedVal: { [key: number] : string } = {};
-
-Channel.on("open", function(chan) {
-    let val = cachedVal[chan.getID()] || "";
-    $textArea.val(val);
-    displayTypings(chan.getID());
-})
-
-Channel.on("close", function(chan) {
-    cachedVal[chan.getID()] = $textArea.val();
-})
-
-
-
+let inputValues: { [chanID: number] : string } = {};
+// Keep in memory the users ID that are typing between channels
+let typings: { [chanID: number] : number[] } = {};
+// Keep track of whether or not the user is typing
 let isTyping = false;
 
+
+/** Update and brocast the isTyping variable */
 function setTyping(typing: boolean) {
     isTyping = typing;
 
@@ -41,7 +27,53 @@ function setTyping(typing: boolean) {
     })
 }
 
-function onKeyUp(data) {
+/** Register the message */
+function registerMessage(text: string) {
+    if (text == "") {
+        return false;
+    }
+
+    emit("registerMessage", {
+        channel: Channel.getSelected().getID(),
+        text: text
+    })
+
+    return true;
+}
+
+/** Format and return the typing text for the notification bar */
+function getTypingsText(chanID: number) {
+    let users = typings[chanID] || [];
+    let n = users.length;
+
+    if (n == 0) {
+        return "";
+    }
+
+    let name = User.get(users[0]).getName();
+
+    if (n == 1) {
+        return name + " is typing...";
+    }
+
+    if (n == 2) {
+        let name2 = User.get(users[1]).getName();
+        return name + " and " + name2 + " are typing...";
+    }
+
+    if (n > 2) {
+        // Remove the name displayed from the others count
+        let others = n - 1;
+        return name + " and " + others + " others are typing...";
+    }
+}
+
+
+// Reset the chat input on page load
+$textArea.val("");
+
+
+$textArea.keyup( function(data) {
     let text: string = $textArea.val().trim();
 
     // User deleted his message.
@@ -63,41 +95,26 @@ function onKeyUp(data) {
     if (!isTyping) {
         setTyping(true);
     }
-}
+})
 
 
-function registerMessage(text: string) {
-    if (text == "") {
-        return false;
-    }
+Channel.on("open", function(chan) {
+    let chanID = chan.getID();
 
-    emit("registerMessage", {
-        channel: Channel.getSelected().getID(),
-        text: text
-    })
+    // Restore the saved input value
+    let val = inputValues[chanID] || "";
+    $textArea.val(val);
 
-    return true;
-}
+    // Display who is typing
+    $notification.text(getTypingsText(chanID));
+})
 
+Channel.on("close", function(chan) {
+    let chanID = chan.getID();
 
-let typings: {[id: number] : number[]} = {};
-
-function displayTypings(chanID: number) {
-    let users = typings[chanID] || [];
-
-    if (users.length == 0) {
-        $notification.text("");
-        return;
-    }
-
-    let text = "";
-
-    users.forEach( function(id) {
-        text = text + User.get(id).getName();
-    })
-
-    $notification.text(text);
-}
+    // Save the input value
+    inputValues[chanID] = $textArea.val();
+})
 
 
 socket.on("userTyping", function(args) {
@@ -119,7 +136,8 @@ socket.on("userTyping", function(args) {
 
     typings[args.channel] = users;
 
+    // Update who is typing
     if (Channel.getSelected().getID() == args.channel) {
-        displayTypings(args.channel);
+        $notification.text(getTypingsText(args.channel));
     }
 })
