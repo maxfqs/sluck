@@ -13,6 +13,8 @@ const events = new EventEmitter();
 */
 interface Events {
     "create": User
+    "connect": User
+    "disconnect": User
 }
 
 
@@ -79,11 +81,13 @@ export default class User {
     setOnline() {
         this.item.setOnline();
         this.online = true;
+        User.emit("connect", this);
     }
 
     setOffline() {
         this.item.setOffline();
         this.online = false;
+        User.emit("disconnect", this);
     }
 }
 
