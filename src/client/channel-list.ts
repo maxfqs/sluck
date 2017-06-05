@@ -9,6 +9,11 @@ const $chan = $channelList.find("#template .channel");
 
 // Create a new channel item
 Channel.on("create", function(chan) {
+    // Ignore direct and personal channel
+    if (!chan.isType("public")) {
+        return false;
+    }
+
     let $item = $chan.clone();
     $item.find(".name").text(chan.getName());
 

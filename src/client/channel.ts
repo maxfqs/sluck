@@ -83,6 +83,10 @@ export default class Channel {
     getName() {
         return this.data.name;
     }
+
+    isType(type: Model<"channel">["type"]) {
+        return this.data.type == type;
+    }
 }
 
 
