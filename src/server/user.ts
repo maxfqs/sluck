@@ -28,8 +28,10 @@ export async function create(login: string, password: string) {
 
     let id = result[0];
 
+    await createPersonnalChannel(id);
     await addToAutoJoinChannel(id);
-    return id;    
+
+    return id;
 }
 
 /**
@@ -72,6 +74,15 @@ async function isValidLogin(login: string) {
         return true;
     }
     return false;
+}
+
+
+async function createPersonnalChannel(userID: number) {
+    let result = await channelDB.insert({type: "personal"});
+    await userChansDB.insert({
+        channel: result[0],
+        user: userID
+    })
 }
 
 /** [ASYNC] Add the user to all auto join channels */
