@@ -1,7 +1,6 @@
 import EventEmitter from "./event-emitter"
 import {Model} from "../interface/client-model"
 import {emit, socket} from "../client/socket"
-import {UserListItem} from "../client/user-list"
 
 const events = new EventEmitter();
 
@@ -22,12 +21,10 @@ export default class User {
     private static currentUser: number = null;
     private static users: { [id: number] : User } = {};
     private data: Model<"user">
-    private item: UserListItem
     private online: boolean
 
     constructor(data: Model<"user">) {
         this.data = data;
-        this.item = new UserListItem(data.login, this.getAvatar());
         this.online = false;
 
         User.users[data.id] = this;
@@ -79,13 +76,11 @@ export default class User {
     }
 
     setOnline() {
-        this.item.setOnline();
         this.online = true;
         User.emit("connect", this);
     }
 
     setOffline() {
-        this.item.setOffline();
         this.online = false;
         User.emit("disconnect", this);
     }

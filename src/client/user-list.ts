@@ -1,39 +1,50 @@
 import $ from "../client/jquery"
+import User from "../client/user"
+
 
 const $list = $("#app").find("#user-list");
 const $onlineLB = $list.find("#online-lb");
 const $offlineLB = $list.find("#offline-lb");
 const $onlineNumber = $list.find("#online .number");
 const $offlineNumber = $list.find("#offline .number");
-const $item = $list.find("#template > .user");
+const $user = $list.find("#template > .user");
 
 
-export class UserListItem {
-    private $: JQuery
-    private $avatar: JQuery
-    private $name: JQuery
+// Create a new user item
+User.on("create", function(user) {
+    let $item = $user.clone();
 
-    constructor(name: string, avatar: string) {
-        this.$ = $item.clone();
-        this.$avatar = this.$.find(".avatar");
-        this.$name = this.$.find(".name");
+    $item.find(".avatar").attr("src", user.getAvatar());
+    $item.find(".name").text(user.getName());
 
-        this.$avatar.attr("src", avatar);
-        this.$name.text(name);
+    $item.data("id", user.getID());
 
-        appendAlphaSorted(this.$, "offline");
-    }
+    appendAlphaSorted($item, "offline");
+})
 
-    setOnline() {
-        appendAlphaSorted(this.$, "online");
-    }
 
-    setOffline() {
-        appendAlphaSorted(this.$, "offline");
-    }
+// Handle user connect / disconnect
+User.on("connect", function(user) {
+    let $item = getByID(user.getID());
+    appendAlphaSorted($item, "online");
+})
+
+User.on("disconnect", function(user) {
+    let $item = getByID(user.getID());
+    appendAlphaSorted($item, "offline");
+})
+
+
+/** Return a user item by user ID */
+function getByID(userID: number) {
+    let $item = $list.find(".user").filter( function() {
+        return $(this).data("id") == userID;
+    })
+
+    return $item;
 }
 
-
+/** Append to the correct list (online - offline) in alphabetical order */
 function appendAlphaSorted($item: JQuery, mode: "online" | "offline") {
     let $lb = (mode == "online") ? $onlineLB : $offlineLB;
     let name = $item.find(".name").text().trim().toLowerCase();

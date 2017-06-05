@@ -1,6 +1,7 @@
 import "./client/chat-input"
 import "./client/chat-topbar"
 import "./client/modal-create-channel"
+import "./client/user-list"
 import Channel from "./client/channel"
 import {emit} from "./client/socket"
 import User from "./client/user"
