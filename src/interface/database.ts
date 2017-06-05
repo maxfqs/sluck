@@ -35,7 +35,11 @@ export interface Database {
 
 
 interface Channels {
-    insert: {name: string, auto_join?: boolean}
+    insert: {
+        name?: string,
+        type?: ChannelShema["type"],
+        auto_join?: boolean
+    }
     shema: ChannelShema
 }
 
@@ -63,6 +67,8 @@ interface BaseShema {
 interface ChannelShema extends BaseShema {
     /** Channel's name (unique) */
     name: string
+    /** Channel's type */
+    type: "public" | "direct" | "personal"
     /** Should user join automatically this channel */
     auto_join: boolean
 }
