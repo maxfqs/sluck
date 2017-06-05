@@ -1,4 +1,3 @@
-import {ChannelItem} from "../client/left-panel-item"
 import EventEmitter from "./event-emitter"
 import MessageContainer from "../client/message-container"
 import {Model} from "../interface/client-model"
@@ -24,17 +23,10 @@ export default class Channel {
     private static selected: Channel = null;
     private data: Model<"channel">
     private container: MessageContainer
-    private item: ChannelItem
 
     constructor(data: Model<"channel">) {
         this.data = data;
         this.container = new MessageContainer(data.id);
-        this.item = new ChannelItem(data.name);
-
-        let self = this;
-        this.item.$.on("click", function() {
-            self.open();
-        })
 
         Channel.channels[data.id] = this;
         Channel.emit("create", this);
@@ -70,7 +62,6 @@ export default class Channel {
             Channel.selected.close();
         }
 
-        this.item.setActive();
         this.container.open();
 
         Channel.selected = this;
@@ -79,7 +70,6 @@ export default class Channel {
 
     /** Close the channel */
     close() {
-        this.item.setInactive();
         this.container.close();
         Channel.emit("close", this);
     }

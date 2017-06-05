@@ -1,3 +1,4 @@
+import "./client/channel-list"
 import "./client/chat-input"
 import "./client/chat-topbar"
 import "./client/modal-create-channel"

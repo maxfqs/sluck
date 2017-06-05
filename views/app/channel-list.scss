@@ -1,4 +1,4 @@
-.header, .item {
+.header, .channel {
     padding: 0.25em 20px;
     color: white;
     opacity: 0.6;
@@ -17,7 +17,7 @@
     }
 }
 
-.item {
+.channel {
     display: flex;
     align-items: center;
     position: relative;
