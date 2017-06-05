@@ -20,6 +20,7 @@ interface Events {
 
 export default class Channel {
     private static channels: { [id: number] : Channel } = {};
+    private static personal: Channel = null;
     private static selected: Channel = null;
     private data: Model<"channel">
     private container: MessageContainer
@@ -27,6 +28,10 @@ export default class Channel {
     constructor(data: Model<"channel">) {
         this.data = data;
         this.container = new MessageContainer(data.id);
+
+        if (this.isType("personal")) {
+            Channel.personal = this;
+        }
 
         Channel.channels[data.id] = this;
         Channel.emit("create", this);
@@ -42,6 +47,11 @@ export default class Channel {
         events.emit(e, args);
     }
 
+    /** Static - Return the personal channel */
+    static getPersonal() {
+        return Channel.personal;
+    }
+
     /** Static - Return the currently selected channel */
     static getSelected() {
         return Channel.selected;
@@ -55,7 +65,7 @@ export default class Channel {
     /** Open the channel */
     open() {
         if (Channel.selected == this) {
-            return false;
+            return;
         }
 
         if (Channel.selected != null) {

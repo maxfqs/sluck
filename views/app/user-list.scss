@@ -37,6 +37,11 @@
         background-color: lighten($blue-dark, 10);
         opacity: 1 !important;
     }
+
+    &.selected {
+        background-color: $blue;
+        opacity: 1 !important;        
+    }
 }
 
 #online-lb .user {
