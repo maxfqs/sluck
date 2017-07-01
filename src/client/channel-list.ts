@@ -25,19 +25,21 @@ Channel.on("create", function(chan) {
     appendAlphaSorted($item);
 })
 
-// Handle channel open / close events
-Channel.on("open", function(chan) {
+/** Toggle the selected class on open - close events */
+function toggleSelected(chan: Channel) {
+    if (!chan.isType("public")) {
+        return false;
+    }
+
     let $item = getByID(chan.getID());
-    $item.addClass("selected");
-})
+    $item.toggleClass("selected");
+}
 
-Channel.on("close", function(chan) {
-    let $item = getByID(chan.getID());
-    $item.removeClass("selected");
-})
+Channel.on("open", toggleSelected);
+Channel.on("close", toggleSelected);
 
 
-/** Return a channel item by user ID */
+/** Return a channel item by channel ID */
 function getByID(chanID: number) {
     let $item = $list.find(".channel").filter( function() {
         return $(this).data("id") == chanID;
