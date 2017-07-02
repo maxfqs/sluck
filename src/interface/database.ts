@@ -3,6 +3,7 @@ import * as knex from "knex"
 interface KnexAnylator extends knex.QueryBuilder {
     select: any
     orderBy: any
+    whereIn: any
     where: any
     andWhere: any
 }
@@ -10,6 +11,7 @@ interface KnexAnylator extends knex.QueryBuilder {
 export interface QueryBuilder<T extends Tables> extends KnexAnylator {
     select: <K extends ShemaKey<T>> (...args: K[]) => this
     orderBy: (key: ShemaKey<T>, mode: "asc" | "desc") => this
+    whereIn: <K extends ShemaKey<T>> (key: K, arg: Shema<T>[K] | Shema<T>[K][]) => this
     where: Where<T, ShemaKey<T>>
     andWhere: Where<T, ShemaKey<T>>
 }
