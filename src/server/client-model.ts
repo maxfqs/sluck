@@ -11,24 +11,39 @@ const userDB = new Database("users");
 
 
 /** [ASYNC] Return all the users */
-export async function getAllUsers(): Promise< Model<"user">[] > {
-    let result = await userDB.select("id", "login", "avatar");
-    return result;
+export async function getAllUsers() {
+    let users: Model<"user">[] = await userDB.select("id", "login", "avatar");
+    return users;
 }
+
+/** [ASYNC] Return users by id */
+export async function getUserByID(id: number): Promise<Model<"user">>;
+export async function getUserByID(id: number[]): Promise<Model<"user">[]>;
+
+export async function getUserByID(id: number | number[]) {
+    let ids = Array.isArray(id) ? id : [id];
+    let retval: Model<"user">[] = [];
+
+    let result = await userDB.getByID(ids);
+    result.forEach( function(user) {
+        retval.push({
+            id: user.id,
+            login: user.login,
+            avatar: user.avatar
+        })
+    })
+
+    if (retval.length == 1) {
+        return retval[0];
+    }
+
+    return retval;
+}
+
 
 export async function getChannelByID(chanID: number): Promise<Model<"channel">> {
     let chan = await chanDB.getByID(chanID);
     return chan[0];
-}
-
-export async function getUserByID(userID: number): Promise<Model<"user">> {
-    let result = await userDB.getByID(userID);
-    let user = {
-        id: result[0].id,
-        login: result[0].login,
-        avatar: result[0].avatar
-    }
-    return user;
 }
 
 
