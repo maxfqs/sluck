@@ -1,10 +1,6 @@
-import * as channel from "../server/channel"
-import Database from "../server/database"
-import * as user from "../server/user"
+import * as clientModel from "../server/client-model"
 import {IO, Socket} from "../interface/socket"
-
-const channelDB = new Database("channels");
-const userChanDB = new Database("user-channels");
+import {Model} from "../interface/client-model"
 
 
 export default class LiveUser {
@@ -48,10 +44,11 @@ export default class LiveUser {
 
     /** Make all the users concerned join that channel */
     static async addChannel(chanID: number) {
-        let members = await channel.getUsersID(chanID);
+        let chan = await clientModel.getChannelByID(chanID);
+
         LiveUser.toAll( function(user) {
-            if (members.indexOf(user.id) > -1) {
-                user.joinChannel(chanID);
+            if (chan.members.indexOf(user.id) > -1) {
+                user.joinChannel(chan);
             }
         })
     }
@@ -71,7 +68,7 @@ export default class LiveUser {
             return true;
         }
 
-        this.channels = await user.getChannelsID(this.id);
+        this.channels = await clientModel.getUserChannelsID(this.id);
         this.initDone = true;
     }
 
@@ -92,14 +89,15 @@ export default class LiveUser {
     }
 
     /** Add the user to that channel */
-    joinChannel(chanID: number) {
-        if (this.channels.indexOf(chanID) > -1) {
+    joinChannel(chan: Model<"channel">) {
+        if (this.channels.indexOf(chan.id) > -1) {
             return false;
         }
 
-        this.channels.push(chanID);
+        this.channels.push(chan.id);
         this.sockets.forEach( function(socket) {
-            socket.join("channel" + chanID);
+            socket.join("channel" + chan.id);
+            socket.emit("newChannel", chan);
         })
     }
 

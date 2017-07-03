@@ -50,23 +50,6 @@ export async function auth(login: string, password: string) {
     return result[0].id;
 }
 
-/** [ASYNC] Return the user's channels id */
-export async function getChannelsID(userID: number) {
-    let result = await userChansDB.get({user: userID});
-    if (result.length == 0) {
-        return [];
-    }
-
-    let chanIDS: number[] = [];
-
-    result.forEach( function(shema) {
-        chanIDS.push(shema.channel);
-    })
-
-    return chanIDS;
-}
-
-
 /** [ASYNC] Check whether the login is available */
 async function isValidLogin(login: string) {
     let result = await userDB.get({login: login});

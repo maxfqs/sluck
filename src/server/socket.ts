@@ -67,15 +67,6 @@ function initSocket(socket: Socket) {
     socket.on("createChannel", async function(args, cb) {
         let chanID = await channel.create(args.name, args.auto_join);
         cb(chanID);
-
-        if (!chanID) {
-            return false;
-        }
-
-        await LiveUser.addChannel(chanID);
-
-        let chan = await clientModel.getChannelByID(chanID);
-        io.to("channel" + chanID).emit("newChannel", chan);
     })
 
 

@@ -1,4 +1,5 @@
-import Database from "./database"
+import Database from "../server/database"
+import LiveUser from "../server/live-user"
 import {Insert} from "../interface/database"
 
 
@@ -24,11 +25,11 @@ export async function create(name: string, autoJoin?: boolean) {
 
     let id = result[0];
 
-    if (!autoJoin) {
-        return id;
+    if (autoJoin) {
+        await addUsersToChannel(id, true);
     }
 
-    await addUsersToChannel(id, true);
+    LiveUser.addChannel(id);
     return id;
 }
 

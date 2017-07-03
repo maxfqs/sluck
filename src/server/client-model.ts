@@ -41,6 +41,22 @@ export async function getUserByID(id: number | number[]) {
     return retval;
 }
 
+/** [ASYNC] Return the user's channels ids */
+export async function getUserChannelsID(userID: number) {
+    let result = await userChansDB.get({user: userID});
+    if (result.length == 0) {
+        return [];
+    }
+
+    let chanIDS: number[] = [];
+
+    result.forEach( function(shema) {
+        chanIDS.push(shema.channel);
+    })
+
+    return chanIDS;
+}
+
 
 /** [ASYNC] Return channels by id */
 export async function getChannelByID(id: number): Promise<Model<"channel">>
