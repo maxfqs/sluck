@@ -21,6 +21,11 @@ Channel.on("open", function(chan) {
         name = "personal channel";
     }
 
+    if (chan.isType("direct")) {
+        let userID = chan.getInterlocutorID();
+        name = User.get(userID).getName();
+    }
+
     $channelName.text(name);
 })
 

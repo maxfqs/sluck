@@ -48,11 +48,17 @@ function updateSelectedItem(chan: Channel) {
         return false;
     }
 
-    let myID = User.getCurrentUser().getID();
+    let userID: number;
 
     if (chan.isType("personal")) {
-        getByID(myID).toggleClass("selected");
+        userID = User.getCurrentUser().getID();
     }
+
+    if (chan.isType("direct")) {
+        userID = chan.getInterlocutorID();
+    }
+
+    getByID(userID).toggleClass("selected");
 }
 
 
@@ -60,6 +66,8 @@ function onItemClick(userID: number) {
     if (User.isCurrentUser(userID)) {
         return Channel.getPersonal().open();
     }
+
+    Channel.getDirect(userID).open();
 }
 
 /** Return a user item by user ID */

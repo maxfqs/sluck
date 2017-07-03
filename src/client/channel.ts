@@ -69,6 +69,11 @@ export default class Channel {
         return Channel.personal;
     }
 
+    /** Static - Return the direct channel for that user */
+    static getDirect(userID: number) {
+        return Channel.direct[userID];
+    }
+
     /** Static - Return the currently selected channel */
     static getSelected() {
         return Channel.selected;
@@ -112,6 +117,24 @@ export default class Channel {
         return this.data.name;
     }
 
+    /** Get channel members (users id) */
+    getMembers() {
+        return this.data.members;
+    }
+
+    /** Return the interlocutor user ID of a direct channel */
+    getInterlocutorID() {
+        let retval: number;
+        this.data.members.forEach( function(id) {
+            if (User.getCurrentUser().getID() != id) {
+                retval = id;
+            }
+        })
+
+        return retval;
+    }
+
+    /** Check the channel's type */
     isType(type: Model<"channel">["type"]) {
         return this.data.type == type;
     }
