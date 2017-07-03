@@ -18,7 +18,7 @@ Channel.on("open", function(chan) {
     }
 
     if (chan.isType("personal")) {
-        name = User.getCurrentUser().getName();
+        name = "personal channel";
     }
 
     $channelName.text(name);
