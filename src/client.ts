@@ -13,12 +13,12 @@ async function init() {
 
     User.setCurrentUser(data.currentUser);
 
-    data.channels.forEach( function(chan) {
-        new Channel(chan);
-    })
-
     data.users.forEach( function(user) {
         new User(user);
+    })
+
+    data.channels.forEach( function(chan) {
+        new Channel(chan);
     })
 
     data.online.forEach( function(id) {

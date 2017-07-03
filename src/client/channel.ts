@@ -1,5 +1,6 @@
 import EventEmitter from "./event-emitter"
 import MessageContainer from "../client/message-container"
+import User from "../client/user"
 import {Model} from "../interface/client-model"
 import {socket} from "../client/socket"
 
@@ -20,6 +21,7 @@ interface Events {
 
 export default class Channel {
     private static channels: { [id: number] : Channel } = {};
+    private static direct: { [userID: number] : Channel } = {};
     private static personal: Channel = null;
     private static selected: Channel = null;
     private data: Model<"channel">
@@ -33,9 +35,24 @@ export default class Channel {
             Channel.personal = this;
         }
 
+        // Register to the direct channel list by interlocutor's id
+        if (this.isType("direct")) {
+            let userID: number;
+
+            this.data.members.forEach( function(id) {
+                if (id != User.getCurrentUser().getID()) {
+                    userID = id;
+                }
+            })
+
+            Channel.direct[userID] = this;
+        }
+
+
         Channel.channels[data.id] = this;
         Channel.emit("create", this);
     }
+
 
     /** Static - Register an event handler */
     static on <E extends keyof Events> (e: E, cb: (args: Events[E]) => void) {
@@ -61,6 +78,7 @@ export default class Channel {
     static get(chanID: number) {
         return Channel.channels[chanID];
     }
+
 
     /** Open the channel */
     open() {
