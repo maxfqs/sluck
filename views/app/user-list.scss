@@ -1,5 +1,5 @@
 .header, .user {
-    padding: 2px $chat-padding;
+    padding: 4px $chat-padding;
     color: white;
 }
 
@@ -16,14 +16,13 @@
 .user {
     display: flex;
     align-items: center;
-    margin-top: 5px;
 
     font-size: 1.4em;
     cursor: pointer;
 
     .avatar {
-        height: 1.5em;
-        width: 1.5em;
+        height: 1.2em;
+        width: 1.2em;
         background-color: white;
         border-radius: 100%;
     }
@@ -40,7 +39,7 @@
 
     &.selected {
         background-color: $blue;
-        opacity: 1 !important;        
+        opacity: 1 !important;
     }
 }
 
