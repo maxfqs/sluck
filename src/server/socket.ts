@@ -47,7 +47,7 @@ function initSocket(socket: Socket) {
         User.registerSocket(socket);
 
         let data = await Promise.all([
-            User.getChannels(),
+            clientModel.getChannelByID(User.getChannelsID()),
             LiveUser.getOnlineUsersID(),
             clientModel.getAllUsers()
         ])

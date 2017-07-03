@@ -8,6 +8,7 @@ const NUMBER_OF_MESSAGES = 30;
 const chanDB = new Database("channels");
 const messageDB = new Database("messages");
 const userDB = new Database("users");
+const userChansDB = new Database("user-channels");
 
 
 /** [ASYNC] Return all the users */
@@ -41,9 +42,48 @@ export async function getUserByID(id: number | number[]) {
 }
 
 
-export async function getChannelByID(chanID: number): Promise<Model<"channel">> {
-    let chan = await chanDB.getByID(chanID);
-    return chan[0];
+/** [ASYNC] Return channels by id */
+export async function getChannelByID(id: number): Promise<Model<"channel">>
+export async function getChannelByID(id: number[]): Promise<Model<"channel">[]>
+
+export async function getChannelByID(id: number | number[]) {
+    let ids = Array.isArray(id) ? id : [id];
+    let retval: Model<"channel">[] = [];
+
+    let data = await Promise.all([
+        chanDB.getByID(ids),
+        getChannelMembers(ids)
+    ])
+
+    data[0].forEach( function(chan) {
+        retval.push({
+            ...chan,
+            members: data[1][chan.id]
+        })
+    })
+
+    if (retval.length == 1) {
+        return retval[0];
+    }
+
+    return retval;
+}
+
+/** [ASYNC] Return the channel's members ids */
+async function getChannelMembers(ids: number[]) {
+    let retval: { [chanID: number]: number[] } = {};
+
+    return userChansDB.knex()
+    .whereIn("channel", ids)
+    .catch(userChansDB.error)
+    .then( function(result: Shema<"user-channels">[]) {
+        result.forEach( function(r) {
+            retval[r.channel] = retval[r.channel] || [];
+            retval[r.channel].push(r.user);
+        })
+
+        return retval;
+    })
 }
 
 

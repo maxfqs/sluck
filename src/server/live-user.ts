@@ -131,7 +131,7 @@ export default class LiveUser {
         delete LiveUser.users[this.id];
     }
 
-    async getChannels() {
-        return await channelDB.getByID(this.channels);
+    getChannelsID() {
+        return this.channels;
     }
 }
