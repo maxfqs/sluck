@@ -28,7 +28,7 @@ export default class Database<T extends DB.Tables> {
         .insert(data)
         .catch(this.error)
         .then( function(result: number[]) {
-            return result
+            return result[0];
         })
     }
 

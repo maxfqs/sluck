@@ -5,7 +5,7 @@ import {Insert} from "../interface/database"
 
 const channelDB = new Database("channels");
 const userDB = new Database("users");
-const userChanDB = new Database("user-channels");
+const userChansDB = new Database("user-channels");
 
 
 /**
@@ -18,12 +18,10 @@ export async function create(name: string, autoJoin?: boolean) {
         return false;
     }
 
-    let result = await channelDB.insert({
+    let id = await channelDB.insert({
         name: name,
         auto_join: autoJoin || false
     })
-
-    let id = result[0];
 
     if (autoJoin) {
         await addUsersToChannel(id, true);
@@ -33,20 +31,53 @@ export async function create(name: string, autoJoin?: boolean) {
     return id;
 }
 
-/** [ASYNC] Get the users id of that channel */
-export async function getUsersID(chanID: number) {
-    let retval: number[] = [];
-    let users = await userChanDB.get({channel: chanID});
+/** [ASYNC] Create the personal channel for that user */
+export async function createPersonnalChannel(userID: number) {
+    let chanID = await channelDB.insert({type: "personal"});
+    await userChansDB.insert({
+        channel: chanID,
+        user: userID
+    })
+}
 
-    if (users.length == 0) {
-        return retval;
+/** [ASYNC] Create the direct channels for that user */
+export async function createDirectChannels(userID: number) {
+    let chansID: number[] = [];
+    let usersID: number[] = [];
+    let chansInsert: Insert<"channels">[] = [];
+    let userChansInsert: Insert<"user-channels">[] = [];
+
+    let result = await userDB.select("id");
+
+    // We need a least 2 users for the direct channel to exist
+    if (result.length < 2) {
+        return false;
     }
 
-    users.forEach( function(shema) {
-        retval.push(shema.user);
+    result.forEach( function(r) {
+        if (r.id != userID) {
+            usersID.push(r.id);
+            chansInsert.push({type: "direct"});
+        }
     })
 
-    return retval;
+    let chanID = await channelDB.insert(chansInsert);
+
+    usersID.forEach( function(id) {
+        userChansInsert.push(
+            {channel: chanID, user: id},
+            {channel: chanID, user: userID}
+        )
+
+        chansID.push(chanID);
+        chanID++;
+    })
+
+    await userChansDB.insert(userChansInsert);
+
+    chansID.forEach( function(id) {
+        LiveUser.addChannel(id);
+    })
 }
 
 
@@ -81,10 +112,14 @@ async function addUsersToChannel(chanID: number, users: number[] | true) {
         usersID = users;
     }
 
+    if (usersID.length == 0) {
+        return false;
+    }
+
     let insertData: Insert<"user-channels">[] = [];
     usersID.forEach( function(id) {
         insertData.push({channel: chanID, user: id});
     })
 
-    await userChanDB.insert(insertData);
+    await userChansDB.insert(insertData);
 }
