@@ -69,6 +69,8 @@ interface BaseShema {
 interface ChannelShema extends BaseShema {
     /** Channel's name (unique) */
     name: string
+    /** Channel's topic */
+    topic: string
     /** Channel's type */
     type: "public" | "direct" | "personal"
     /** Should user join automatically this channel */

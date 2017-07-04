@@ -1,7 +1,19 @@
-#channel-name {
+#channel-info {
     flex: auto;
-    font-size: 1.25em;
     font-weight: 700;
+
+    .name {
+        font-size: 1.2em;
+    }
+
+    .topic {
+        font-size: 0.8em;
+        opacity: 0.5;
+    }
+
+    .info {
+        padding-top: 4px;
+    }
 }
 
 .icon {

@@ -30,7 +30,7 @@
     #chat-topbar {
         display: flex;
         align-items: center;
-        padding: 4px $chat-padding;
+        padding: 8px $chat-padding;
         border-bottom: 1px solid lighten(grey, 35);
 
         @import "chat-topbar";

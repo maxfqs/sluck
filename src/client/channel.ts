@@ -134,6 +134,11 @@ export default class Channel {
         return retval;
     }
 
+    /** Return the channel topic */
+    getTopic() {
+        return this.data.topic || "Add a topic";
+    }
+
     /** Check the channel's type */
     isType(type: Model<"channel">["type"]) {
         return this.data.type == type;
